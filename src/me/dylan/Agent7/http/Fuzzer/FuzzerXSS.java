@@ -57,7 +57,7 @@ public class FuzzerXSS extends Fuzzer {
 
 	public void beginInjectionForms() {
 		for (Element e : forms) {
-			if (url != null && !url.isEmpty())
+			if (url == null || url.isEmpty())
 				Agent7.logLine("Could not find url, using default: " + url);
 			url = e.attr("abs:action");
 			// else
@@ -93,8 +93,10 @@ public class FuzzerXSS extends Fuzzer {
 					payload = payload.replace("#payload", "vulnerablePage"
 							+ index + "#" + name);
 					Connection connection = Jsoup.connect(url);
+					verifyPayloadExecution(index, name, true);
 					sendGetPostPayloads(connection, payload);
-					verifyPayloadExecution(index, name);
+					verifyPayloadExecution(index, name, false); // not confirmed
+																// functioning.
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -104,17 +106,29 @@ public class FuzzerXSS extends Fuzzer {
 		Agent7.setProgress(0);
 	}
 
-	public void verifyPayloadExecution(int index, String name)
+	/**
+	 * Did our payload execute?
+	 * 
+	 * @param index
+	 *            - The index of the payload in the document
+	 * @param name
+	 *            - the name of the possibly vulnerable form
+	 * @param saved
+	 *            - do we check for stored or local xss?
+	 * @throws UnknownHostException
+	 */
+	public void verifyPayloadExecution(int index, String name, boolean saved)
 			throws UnknownHostException {
 		Element e = doc.getElementById("vulnerablePage" + index + "#" + name);
 		if (e != null
 				&& !e.parents().html().contains("noscript")
-				&& e.html().contains(
+				&& e.data().contains(
 						Inet4Address.getLocalHost().getHostAddress()))
-			Agent7.logLine("Found vunerability using payload: "
-					+ payloads.get(index) + " On form: " + name);
+			Agent7.logLine("Found " + (saved ? "stored" : "local")
+					+ " vunerability using payload: " + payloads.get(index)
+					+ " On form: " + name);
 	}
-
+	
 	public void sendGetPostPayloads(Connection connection, String payload) {
 		for (String param : params) {
 			if (param.isEmpty())

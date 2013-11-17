@@ -17,12 +17,12 @@ import org.jsoup.select.Elements;
  * @author Dylan
  *
  */
-public class FuzzerSQL extends Fuzzer {
+public class FuzzerPhp extends Fuzzer {
 
-	public FuzzerSQL(String url) {
+	public FuzzerPhp(String url) {
 		this.url = url;
 		try {
-			payloads = PayloadUtil.getInjectionPayloads("SQLTests.txt");
+			payloads = PayloadUtil.getInjectionPayloads("PHPTests.txt");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -32,19 +32,29 @@ public class FuzzerSQL extends Fuzzer {
 	}
 
 	public void beginInjectionLinks() {
-
-		Elements linkElements = doc.getElementsByTag("a");
+		getCommonLinkExtensions();
+		connectionMethod = "GET";
+		Agent7.logLine("Testing popular url extensions(GET).");
+		executeTestConnection(params);
+		
+		connectionMethod = "POST";
+		Agent7.logLine("Testing popular url extensions(POST).");
+		executeTestConnection(params);
+		params.clear();
+	/*	Elements linkElements = doc.getElementsByTag("a");
 		for (Element inputEl : linkElements) {
 			if (!inputEl.text().contains(url))
 				continue;
 			url = inputEl.attr("abs:href");
 			connectionMethod = "GET";
 			params.add(inputEl.text());
-		}
+		}*/
 		executeTestConnection(params);
 	}
 
 	public void beginInjectionForms() {
+		
+		
 		for (Element e : forms) {
 			url = e.attr("abs:action");
 			connectionMethod = e.attr("method");
@@ -62,12 +72,29 @@ public class FuzzerSQL extends Fuzzer {
 		}
 	}
 
+	public void getCommonLinkExtensions() {
+		params.add("url");
+		params.add("page");
+		params.add("pg");
+		params.add("pgid");
+		params.add("value");
+		params.add("val");
+		params.add("include");
+		params.add("inc");
+		params.add("location");
+		params.add("loc");
+		params.add("require");
+	}
+
 	@Override
 	public void beginInjection() {
 		Agent7.logLine("Beginning injection process.");
 		Agent7.logLine("Testing forms...");
 		beginInjectionForms();
+		Agent7.logLine("Testing extras...");
+		beginInjectionLinks();
 	}
+
 	@Override
 	public void executeTestConnection(ArrayList<String> params) {
 		for (String name : params) {
@@ -87,18 +114,7 @@ public class FuzzerSQL extends Fuzzer {
 
 	public void verifyPayloadExecution(int index, String name)
 			throws UnknownHostException {
-		if (doc.html().toLowerCase()
-				.contains("you have an error in your sql syntax;")
-				|| doc.html().toLowerCase()
-						.contains("sql command not properly ended")
-				|| doc.html()
-						.toLowerCase()
-						.contains(
-								"unclosed quotation mark after the character string")
-				|| doc.html()
-						.toLowerCase()
-						.contains(
-								"query failed: error: syntax error at or near"))
+		if (doc.html().contains(Inet4Address.getLocalHost().getHostAddress()))
 			Agent7.logLine("Found vunerability using payload: "
 					+ payloads.get(index) + " On form: " + name);
 	}
