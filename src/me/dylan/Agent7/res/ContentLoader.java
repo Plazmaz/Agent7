@@ -13,7 +13,7 @@ public class ContentLoader {
 		return ImageIO.read(ContentLoader.class.getResource(internalFilePath));
 		
 	}
-	public static InputStream getInternalFile(String internalFilePath) throws IOException {
+	public static InputStream getInternalFileStream(String internalFilePath) throws IOException {
 		URL path = ContentLoader.class.getResource(internalFilePath);
 		return path.openStream();
 	}

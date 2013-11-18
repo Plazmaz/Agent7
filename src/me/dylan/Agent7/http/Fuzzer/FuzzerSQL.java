@@ -12,14 +12,18 @@ import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 /**
  * Not yet implemented, but should function properly.
+ * 
  * @author Dylan
- *
+ * 
  */
 public class FuzzerSQL extends Fuzzer {
 
 	public FuzzerSQL(String url) {
+		if (!url.startsWith("htt"))
+			url = "http://" + url;
 		this.url = url;
 		try {
 			payloads = PayloadUtil.getInjectionPayloads("SQLTests.txt");
@@ -68,6 +72,7 @@ public class FuzzerSQL extends Fuzzer {
 		Agent7.logLine("Testing forms...");
 		beginInjectionForms();
 	}
+
 	@Override
 	public void executeTestConnection(ArrayList<String> params) {
 		for (String name : params) {

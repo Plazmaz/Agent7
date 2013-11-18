@@ -15,7 +15,7 @@ public class PayloadUtil {
 	public static ArrayList<String> getInjectionPayloads(String fileStr)
 			throws IOException {
 		ArrayList<String> payloads = new ArrayList<String>();
-		BufferedReader in = new BufferedReader(new InputStreamReader(ContentLoader.getInternalFile(fileStr)));
+		BufferedReader in = new BufferedReader(new InputStreamReader(ContentLoader.getInternalFileStream(fileStr)));
 
 		String s = "";
 		while ((s = in.readLine()) != null) {

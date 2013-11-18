@@ -1,3 +1,8 @@
-; echo '#ip';
-';echo '#ip';
-";echo '#ip';
+##Deprecated, as this is fixed in most current versions of PHP(will still probably
+##be included)
+##Remote file inclusion:
+#testfile
+##Normal php injection:
+; echo '<div style="visibility: hidden" id=#payload>#ip</div>';
+';echo '<div style="visibility: hidden" id=#payload>#ip</div>';
+";echo '<div style="visibility: hidden" id=#payload>#ip</div>';
