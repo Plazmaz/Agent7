@@ -21,8 +21,7 @@ public class ThreadDictionary extends Thread {
 
 	@Override
 	public void run() {
-		while (!this.getVerified() && !this.isInterrupted()
-				&& !ThreadSyncDictionaryLocal.getFinished()) {
+		while (!this.getVerified() && !this.isInterrupted()) {
 			if (comparisons + offset < Agent7.instance.resLoader
 					.getAllFileContents().size() - 1) {
 				comparisons++;

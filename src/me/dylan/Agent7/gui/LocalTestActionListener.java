@@ -71,6 +71,8 @@ public class LocalTestActionListener implements ActionListener {
 					Agent7.logLine("No dictionaries found, aborting operation.");
 					return;
 				}
+				if(Agent7.instance.threadCount <= 0)
+					Agent7.instance.threadCount = 2;
 				((TestModeLocalMultiThreadDictionary) mode2).performTest(
 						Agent7.instance.threadCount, passStr);
 				Agent7.instance.running.add(mode2);

@@ -5,6 +5,7 @@ import java.net.ConnectException;
 import java.net.SocketException;
 
 import me.dylan.Agent7.Agent7;
+import me.dylan.Agent7.testModes.TestModeFTPMultiThreadDictionary;
 
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPHTTPClient;
@@ -15,6 +16,7 @@ public class ThreadDictionaryFTP extends ThreadDictionary {
 	String username;
 	int port;
 	int offset = 0;
+	private TestModeFTPMultiThreadDictionary parent;
 	/**
 	 * This is the ip of the destination server. This is ONLY to be changed from
 	 * localhost for testing purposes, anything else, and it can be used with
@@ -22,19 +24,48 @@ public class ThreadDictionaryFTP extends ThreadDictionary {
 	 */
 	public static String ip = "localhost";
 
-	public ThreadDictionaryFTP(int offset, int port, String username)
+	public ThreadDictionaryFTP(int offset, int port, String username, TestModeFTPMultiThreadDictionary parent)
 			throws IOException {
 		super("", offset);
+		this.parent = parent;
 		this.username = username;
 		this.port = port;
 		setDelayMicroS(1);
 	}
-
+	/**
+	 * Yes I know it's redundant, but it was
+	 * the only way I could make it work.
+	 * Any assistance would be appreciated.
+	 */
 	public void run() {
-		super.run();
+		while (!this.getVerified() && !this.isInterrupted()) {
+			if (getComparisons() + offset < Agent7.instance.resLoader
+					.getAllFileContents().size() - 1) {
+				setComparisons(getComparisons() + 1);
+				// if (comparisons % 1000 == 0) {
+				Agent7.logLine("Attempted " + getComparisons() + " Passwords.");
+				// }
+				setCurrentString(Agent7.instance.resLoader.getAllFileContents()
+						.get(getComparisons() + offset));
+				updateVerification();
+				// if (!currentString.isEmpty())
+			} else {
+				Agent7.logLine("Your password was not found in our database! Good job!");
+				break;
+			}
+			if (!Agent7.consumeAllPossibleRes) {
+				try {
+					Thread.sleep(getDelayMiliS(), getDelayMicroS());
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
-
+	@Override
 	public void updateVerification() {
+		if(ThreadSyncDictionaryFTP.getFinished())
+			this.setVerified(true);
 		System.out.println("Currently Testing: "+getCurrentString());
 		if (Agent7.fireDrillEnabled) {
 			String proxy = Agent7.instance.proxySelector.getRandomProxy();
@@ -106,11 +137,12 @@ public class ThreadDictionaryFTP extends ThreadDictionary {
 				client.enterLocalPassiveMode();
 				client.appendFileStream("Proxies.dat");
 				client.disconnect();
-				Agent7.logLine("Password found!!! Password: "
+				Agent7.logLine("FTP Password found!!! Password: "
 						+ this.getCurrentString());
 				System.out.println("Password found!!! Password: "
 						+ this.getCurrentString());
-				System.exit(0);
+				
+				ThreadSyncDictionaryFTP.finish();
 			} else {
 				// client.logout();
 				if (!client.isConnected())
@@ -139,6 +171,7 @@ public class ThreadDictionaryFTP extends ThreadDictionary {
 			Thread.sleep(getDelayMiliS(), getDelayMicroS());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			this.interrupt();
 		}
 	}
 

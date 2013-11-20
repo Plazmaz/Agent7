@@ -1,7 +1,6 @@
 package me.dylan.Agent7;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -148,26 +147,22 @@ public class Agent7 {
 		// logLine("No dictionaries found, aborting operation.");
 		// return;
 		// }
+		logLine("Loading...");
+		// new FuzzerXSS("http://localhost/FuzzTesting/fuzzyxss.html");
+		try {
+			scraper.scrape("Proxies.dat");
+			resLoader.init();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		logLine("==========" + "Loaded Agent7 " + version + "==========");
 		logLine(license);
 		try {
 			Thread.sleep(4000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		logLine("Loading...");
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		// new FuzzerXSS("http://localhost/FuzzTesting/fuzzyxss.html");
-		try {
-			scraper.scrape("Proxies.dat");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		logLine("==========" + "Loaded Agent7 " + version + "==========");
 		logLine("==========" + "Awaiting commands." + "==========");
 	}
 

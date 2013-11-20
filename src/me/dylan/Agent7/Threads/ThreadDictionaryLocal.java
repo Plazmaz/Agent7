@@ -50,7 +50,8 @@ public class ThreadDictionaryLocal extends ThreadDictionary {
 
 	@Override
 	public void updateVerification() {
-		if (getCurrentString().equals(comparator))
+		if (getCurrentString().equals(comparator)
+				|| ThreadSyncDictionaryLocal.getFinished())
 			this.setVerified(true);
 	}
 }

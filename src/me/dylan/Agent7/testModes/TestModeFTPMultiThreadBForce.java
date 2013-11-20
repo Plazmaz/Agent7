@@ -24,7 +24,7 @@ public class TestModeFTPMultiThreadBForce implements TestMode {
 	}
 
 	public void performTest(int threadCount, String port, String username) {
-		int maxPassSize = ThreadBruteforce.possibilities.length;
+//		int maxPassSize = ThreadBruteforce.possibilities.length;
 		
 		for (int i = 0; i < threadCount; i++) {
 			ThreadBruteforceFTP ftp = null;
@@ -38,10 +38,10 @@ public class TestModeFTPMultiThreadBForce implements TestMode {
 			ftp.start();
 			threads.add(ftp);
 		}
-		ThreadBruteforceFTP[] bruteforceThs = new ThreadBruteforceFTP[threads.size()];
-		for (Thread force : threads) {
-			bruteforceThs[threads.indexOf(force)] = (ThreadBruteforceFTP) force;
-		}
+//		ThreadBruteforceFTP[] bruteforceThs = new ThreadBruteforceFTP[threads.size()];
+//		for (Thread force : threads) {
+//			bruteforceThs[threads.indexOf(force)] = (ThreadBruteforceFTP) force;
+//		}
 //		ThreadGetResults results = new ThreadGetResults(bruteforceThs);
 //		results.start();
 //		threads.add(results);

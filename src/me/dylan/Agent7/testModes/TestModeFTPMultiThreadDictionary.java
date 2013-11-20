@@ -36,18 +36,10 @@ public class TestModeFTPMultiThreadDictionary implements TestMode {
 		int pieceSize = (wordsSize / threadCount);
 		for (int i = 0; i < wordsSize; i += pieceSize) {
 			ThreadDictionaryFTP dictionary = null;
-			dictionary = new ThreadDictionaryFTP(i, port, username);
+			dictionary = new ThreadDictionaryFTP(i, port, username, this);
 			dictionary.start();
 			threads.add(dictionary);
 		}
-		ThreadDictionaryFTP[] dictThreads = new ThreadDictionaryFTP[threads
-				.size()];
-		for (Thread force : threads) {
-			dictThreads[threads.indexOf(force)] = (ThreadDictionaryFTP) force;
-		}
-		// ThreadGetResults results = new ThreadGetResults(bruteforceThs);
-		// results.start();
-		// threads.add(results);
 
 	}
 

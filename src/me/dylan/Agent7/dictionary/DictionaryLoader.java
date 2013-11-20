@@ -28,12 +28,12 @@ public class DictionaryLoader {
 			lookForWords(f);
 		}
 //		lookForWords(dictionaryFile);
-		// try {
-		// // cleanUpOldWordlists();
-		// writeWordsToList();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
+//		 try {
+//		  cleanUpOldWordlists();
+//		// writeWordsToList();
+//		 } catch (IOException e) {
+//		 e.printStackTrace();
+//		 }
 		this.setLoaded(true);
 
 	}
