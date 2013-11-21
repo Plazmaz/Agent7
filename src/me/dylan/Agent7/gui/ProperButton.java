@@ -2,15 +2,7 @@ package me.dylan.Agent7.gui;
 
 import java.awt.Color;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JPasswordField;
-
-import me.dylan.Agent7.Agent7;
-import me.dylan.Agent7.testModes.TestMode;
-import me.dylan.Agent7.testModes.TestModeLocalMultiThreadBForce;
-import me.dylan.Agent7.testModes.TestModeLocalMultiThreadDictionary;
-import me.dylan.Agent7.testModes.TestType;
 
 /**
  * This is the beginning of a total UI Rewrite.

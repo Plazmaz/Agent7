@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import me.dylan.Agent7.Agent7;
-import me.dylan.Agent7.Threads.ThreadBruteforce;
 import me.dylan.Agent7.Threads.ThreadBruteforceFTP;
 
 public class TestModeFTPMultiThreadBForce implements TestMode {

@@ -16,7 +16,6 @@ public class ThreadDictionaryFTP extends ThreadDictionary {
 	String username;
 	int port;
 	int offset = 0;
-	private TestModeFTPMultiThreadDictionary parent;
 	/**
 	 * This is the ip of the destination server. This is ONLY to be changed from
 	 * localhost for testing purposes, anything else, and it can be used with
@@ -27,7 +26,6 @@ public class ThreadDictionaryFTP extends ThreadDictionary {
 	public ThreadDictionaryFTP(int offset, int port, String username, TestModeFTPMultiThreadDictionary parent)
 			throws IOException {
 		super("", offset);
-		this.parent = parent;
 		this.username = username;
 		this.port = port;
 		setDelayMicroS(1);

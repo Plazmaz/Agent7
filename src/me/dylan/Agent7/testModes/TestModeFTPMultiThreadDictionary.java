@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import me.dylan.Agent7.Agent7;
 import me.dylan.Agent7.Threads.ThreadDictionaryFTP;
-import me.dylan.Agent7.Threads.ThreadDictionaryLocal;
 
 
 public class TestModeFTPMultiThreadDictionary implements TestMode {

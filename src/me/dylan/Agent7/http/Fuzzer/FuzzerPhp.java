@@ -2,13 +2,10 @@ package me.dylan.Agent7.http.Fuzzer;
 
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import me.dylan.Agent7.Agent7;
-import me.dylan.Agent7.res.ContentLoader;
-
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;

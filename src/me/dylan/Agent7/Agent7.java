@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -63,7 +62,7 @@ import me.dylan.Agent7.testModes.TestType;
 public class Agent7 {
 	FrameMain menu;
 	BoxLayout layout;
-	public static String version = "0.0";
+	public static String version = "0.1a";
 	JTextArea output;
 	JScrollPane scroll;
 	public ProxySelector proxySelector;
@@ -101,27 +100,48 @@ public class Agent7 {
 	public static Agent7 instance;
 	private static String license = "*********************************************************************************"
 			+ '\n'
-			+ "  The source and compiled code of Agent7 belong solely to Dylan T. Katz, under "
+			+ "  The source and compiled code of Agent7 belong solely " +
 			+ '\n'
-			+ "  intellectual copyright. Any libraries included in this jar file belong to "
+			+ "to Dylan T. Katz, under "
 			+ '\n'
-			+ "  their respective authors. Copyright(c) November 1st, 2013 "
+			+ "  intellectual copyright." + '\n'
+			+ "Any libraries/Dictionaries included in this " + '\n'
+			+ "jar file belong to "
 			+ '\n'
-			+ "  Agent7(all code contained within this jar file, and it's respective sources) "
+			+ + '\n'
+			+ "  their respective authors. " 
 			+ '\n'
-			+ "  is free software: you can redistribute it and/or modify it under the terms of "
+			+ "Copyright(c) November 1st, 2013 "
 			+ '\n'
-			+ "  the GNU General Public License as published by the Free Software Foundation, "
+			+ "  Agent7(all code contained within this jar file, "
+			+'\n'
+			+ "  and it's respective sources) "
 			+ '\n'
-			+ "  either version 3 of the License, or (at your option) any later version. "
+			+ "  is free software: you can redistribute it and/or modify "
+			+'\n'
+			+ "it under the terms of "
 			+ '\n'
-			+ "  Agent7 is distributed in the hope that it will be useful, but WITHOUT ANY "
+			+ "  the GNU General Public License as published by the Free"
+			+'\n'
+			+ " Software Foundation, "
 			+ '\n'
-			+ "  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR "
+			+ "  either version 3 of the License, or (at your option) any"
+			+'\n'
+			+ "later version. "
 			+ '\n'
-			+ "  A PARTICULAR PURPOSE. See the GNU General Public License for more details. "
+			+ "  Agent7 is distributed in the hope that it will be useful,"
+			+'\n'
+			+ " but WITHOUT ANY  WARRANTY; without even the implied warranty"
+			+'\n'
+			+ " of MERCHANTABILITY or FITNESS FOR "
 			+ '\n'
-			+ "  You should have received a copy of the GNU General Public License along with "
+			+ "  A PARTICULAR PURPOSE. See"
+			+'\n'
+			+ " the GNU General Public License for more details. "
+			+ '\n'
+			+ "  You should have received a copy of the GNU"
+			+'\n'
+			+ " General Public License along with "
 			+ '\n'
 			+ "  Agent7. If not, see http://www.gnu.org/licenses/. "
 			+ '\n'
@@ -149,12 +169,12 @@ public class Agent7 {
 		// }
 		logLine("Loading...");
 		// new FuzzerXSS("http://localhost/FuzzTesting/fuzzyxss.html");
-		try {
-			scraper.scrape("Proxies.dat");
+//		try {
+//			scraper.scrape("Proxies.dat");
 			resLoader.init();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 
 		logLine("==========" + "Loaded Agent7 " + version + "==========");
 		logLine(license);
@@ -187,9 +207,10 @@ public class Agent7 {
 		progressInCurrentTask.setBackground(Color.BLACK);
 		progressInCurrentTask.setBorderPainted(false);
 		progressInCurrentTask.setStringPainted(true);
-		output = new JTextArea(10, 80);
+		output = new JTextArea(10, 65);
 		output.setBackground(Color.BLACK);
 		output.setForeground(Color.GREEN);
+		output.setLineWrap(true);
 		// TODO: Replace with a custom class(maybe.)
 		output.setEditable(false);
 		scroll = new JScrollPane(output);

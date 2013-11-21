@@ -1,7 +1,6 @@
 package me.dylan.Agent7.http.Fuzzer;
 
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 

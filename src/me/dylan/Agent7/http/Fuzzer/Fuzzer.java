@@ -5,12 +5,11 @@ import java.util.ArrayList;
 
 import me.dylan.Agent7.Agent7;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-public class Fuzzer {
+public abstract class Fuzzer implements IFuzzer{
 	ArrayList<Element> forms = new ArrayList<Element>();
 	ArrayList<String> payloads = new ArrayList<String>();
 	ArrayList<String> params = new ArrayList<String>();
@@ -35,13 +34,6 @@ public class Fuzzer {
 			e.printStackTrace();
 		}
 	}
-
-	public void beginInjection() {}
-
-	public void beginInjectionForms() {}
-
-	public void executeTestConnection(ArrayList<String> params) {}
-
-	public void sendGetPostPayloads(Connection connection, String payload) {}
+	
 	
 }

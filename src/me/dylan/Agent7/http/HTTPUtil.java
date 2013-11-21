@@ -3,6 +3,7 @@ package me.dylan.Agent7.http;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Inet4Address;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -20,8 +21,9 @@ public class HTTPUtil {
 			URLConnection connection = destination.openConnection();
 			connection.setRequestProperty("Accept-Charset", charset);
 			connection.setRequestProperty("User-agent",
-					"Diction - A scholarly bot");
-			// Launched August 22, 2013
+					"Agent7 - if you did not initiate this penetration test, " +
+					"here's my ip: " + Inet4Address.getLocalHost());
+			// Launched Nov 1st, 2013
 			connection.setRequestProperty("Content-Type",
 					"application/x-www-form-urlencoded;charset=" + charset);
 
