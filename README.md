@@ -6,7 +6,7 @@ An open source penetration testing tool
 
 
 Agent7 was created in the interest of helping others. This open source, free penetration testing tool is designed to create a simple, yet secure environment for testing your code, while implementing safeguards to stop you from attacking others. If you are here to hack, leave. If you are here to test the integrity of your website, ftp server, or even just a normal password, go no further. Agent7 will   NEVER release any information about vulnerabilities and passwords.
-
+For more info on how to use Agent7, go to https://github.com/DynisDev/Agent7/wiki/_pages
 License:
 
   The source and compiled code of Agent7 belong solely to Dylan T. Katz, under
