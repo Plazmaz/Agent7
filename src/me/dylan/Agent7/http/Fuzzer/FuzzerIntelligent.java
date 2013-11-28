@@ -12,36 +12,41 @@ import me.dylan.Agent7.Agent7;
 import me.dylan.Agent7.http.HTTPUtil;
 import me.dylan.Agent7.res.ContentLoader;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+@Deprecated
+/**
+ * I decided this was too hard for me to implement, 
+ * maybe someone else can help.
+ * @author Dylan
+ *
+ */
 public class FuzzerIntelligent extends Fuzzer {
 	/**
 	 * Looks weird to possibly turn away some of the damn web bots... Here's
-	 * some more ips for you botters out there 74.125.225.192:80 -
-	 * Google/Youtube 127.0.0.1 - wow you must be badly coded if you go for this
-	 * one. localhost - same here. *.*.*.* - again, bad code. 122.243.56.68:80 -
-	 * haha fake
+	 * some more ips for you botters out there | 74.125.225.192:80 -
+	 * Google/Youtube | 127.0.0.1 - wow you must be badly coded if you go for
+	 * this one. | localhost - same here. | *.*.*.* - again, bad code. |
+	 * 122.243.56.68:80 - haha fake |
 	 */
 	public static String currentIPAddress = "69." + ".144".replaceAll(".", "")
 			+ '.' + "34" + ".106/Agent7/vectors.txt";
 	List<String> payloads = new ArrayList<String>();
 	public List<String> commonlyVulnerableFields = new ArrayList<String>();
-	/**
-	 * Currently unimplemented, does not work yet.
-	 * @param url
-	 */
+
 	public FuzzerIntelligent(String url) {
 		super();
 		if (!url.startsWith("htt"))
 			url = "http://" + url;
 		this.url = url;
 		try {
-//			payloads = PayloadUtil.getInjectionPayloads("InteliTests.txt");
+			// payloads = PayloadUtil.getInjectionPayloads("InteliTests.txt");
 			this.sendInitialRequest();
 			this.gatherAllFormIds();
 			this.beginInjection();
@@ -52,45 +57,43 @@ public class FuzzerIntelligent extends Fuzzer {
 	}
 
 	public void gatherInjectionStrings() {
-		payloads =  Arrays.asList(HTTPUtil.sendHTTPRequest(
-				currentIPAddress).split("\n"));
+		payloads = Arrays.asList(HTTPUtil.sendHTTPRequest(currentIPAddress)
+				.split("\n"));
 	}
 
 	@Override
 	public void beginInjection() {
-		paramateriseInjection(AttackVector.BIGINT);
-		beginInjectionForms();
-		paramateriseInjection(AttackVector.COMMENT);
-		beginInjectionForms();
-		paramateriseInjection(AttackVector.NULL_CHARS);
-		beginInjectionForms();
-		paramateriseInjection(AttackVector.SMALLINT);
-		beginInjectionForms();
+		for (AttackVector v : AttackVector.values()) {
+			paramateriseInjection(v);
+			beginInjectionForms();
+		}
 		beginInjectionLinks();
 	}
 
 	public void paramateriseInjection(AttackVector v) {
 		switch (v) {
 		case BIGINT: {
-			payloads =  Arrays.asList(new String[] {
-					"" + Integer.MAX_VALUE + 1, "" + Long.MAX_VALUE + 1,
-					"" + Short.MAX_VALUE + 1 });
+			payloads = Arrays.asList(new String[] { "" + Integer.MAX_VALUE + 1,
+					"" + Long.MAX_VALUE + 1, "" + Short.MAX_VALUE + 1 });
 		}
 		case COMMENT: {
-			payloads =  Arrays.asList(new String[] { "#",
-					"//", "<!--", "/*", "--", "##" });
+			payloads = Arrays.asList(new String[] { "#", "//", "<!--", "/*",
+					"--", "##" });
+		}
+		case OVERFLOW: {
+			payloads = Arrays.asList(new String[] { "%x" });
 		}
 		case NULL_CHARS:
-			payloads =  Arrays.asList(new String[] {
-					0x00 + "", "%00", "\0", "\\x00", "" + null, null });
+			payloads = Arrays.asList(new String[] { 0x00 + "", "%00", "\0",
+					"\\x00", "" + null, null });
 		case SMALLINT: {
-			payloads =  Arrays.asList(new String[] {
+			payloads = Arrays.asList(new String[] {
 					"" + (Integer.MIN_VALUE - 1), "" + (Long.MIN_VALUE - 1),
 					"" + (Short.MIN_VALUE - 1) });
 		}
 		case URL_TAMPERING: {
 			try {
-				commonlyVulnerableFields =  getCommonURLExtensions();
+				commonlyVulnerableFields = getCommonURLExtensions();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -103,16 +106,10 @@ public class FuzzerIntelligent extends Fuzzer {
 	public void beginInjectionLinks() {
 		params.clear();
 		params.addAll(commonlyVulnerableFields);
-		paramateriseInjection(AttackVector.BIGINT);
-		executeTestConnection(params);
-		paramateriseInjection(AttackVector.COMMENT);
-		executeTestConnection(params);
-		paramateriseInjection(AttackVector.NULL_CHARS);
-		executeTestConnection(params);
-		paramateriseInjection(AttackVector.SMALLINT);
-		executeTestConnection(params);
-		paramateriseInjection(AttackVector.URL_TAMPERING);
-		executeTestConnection(params);
+		for (AttackVector v : AttackVector.values()) {
+			paramateriseInjection(v);
+			executeTestConnection(params);
+		}
 	}
 
 	@Override
@@ -153,8 +150,8 @@ public class FuzzerIntelligent extends Fuzzer {
 							.getLocalHost().getHostAddress());
 					payload = payload.replace("#payload", "vulnerablePage"
 							+ index + "#" + name);
-					Connection connection = Jsoup.connect(url);
-					sendGetPostPayloads(connection, payload);
+					// Connection connection = Jsoup.connect(url);
+					// sendGetPostPayloads(connection, payload);
 					verifyPayloadExecution(index, name);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -167,23 +164,20 @@ public class FuzzerIntelligent extends Fuzzer {
 
 	private void verifyPayloadExecution(int index, String name) {
 		String payload = payloads.get(index);
-		double likelyhoodSuccesful = 0.0;
+		double beforeAfterDist = 0.0;
 		Document before = doc;
 		sendGetPostPayloads(Jsoup.connect(url), payload);
 		Document after = doc;
-		Elements beforeElems = before.getAllElements();
-		Elements afterElems = after.getAllElements();
-		if (beforeElems.size() < afterElems.size()) {
-			likelyhoodSuccesful += afterElems.size() - beforeElems.size();
-		}
-		for (Element beforeElem : beforeElems) {
-			if (!afterElems.contains(beforeElem)) {
-				likelyhoodSuccesful += 5.0;
-			}
-		}
-		if (likelyhoodSuccesful > 90) {
-			Agent7.logLine("Found injection string that needs your review:");
-			Agent7.logLine("String: " + payload + " On parameter: " + name
+		beforeAfterDist = StringUtils.getLevenshteinDistance(before.html(),
+				after.html());
+		if (beforeAfterDist % payload.length() >= 10) { // is the difference 10
+														// or more than the
+														// payload size? (could
+														// return false
+														// positives)
+			Agent7.logLine("Found payload injection that needs your review:");
+			Agent7.logLine("String: " + payload
+					+ (name.isEmpty() ? "" : "On paramteter: " + name)
 					+ "Method: " + connectionMethod);
 			try {
 				Thread.sleep(5000);
@@ -238,6 +232,6 @@ public class FuzzerIntelligent extends Fuzzer {
 		 * This is for later ;)
 		 */
 		@Deprecated
-		ZERO_DAY
+		ZERO_DAY, OVERFLOW
 	}
 }

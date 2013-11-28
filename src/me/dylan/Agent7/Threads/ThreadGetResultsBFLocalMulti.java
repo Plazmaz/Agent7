@@ -3,7 +3,6 @@ package me.dylan.Agent7.Threads;
 import java.awt.HeadlessException;
 import java.io.FileNotFoundException;
 
-import javax.swing.JOptionPane;
 
 import me.dylan.Agent7.Agent7;
 import me.dylan.Agent7.dictionary.DictionaryFileUtil;
@@ -57,7 +56,7 @@ public class ThreadGetResultsBFLocalMulti extends Thread {
 		try {
 			if (!Agent7.instance.resLoader.searchForWord(result)
 					&& !util.search(result)) {
-				int canSave = JOptionPane
+				/*int canSave = JOptionPane
 						.showConfirmDialog(
 								null,
 								"Would you like to contribute to this expirement by saving your password? (We couldn't hack you if we wanted to, no username!)",
@@ -66,7 +65,7 @@ public class ThreadGetResultsBFLocalMulti extends Thread {
 				if (canSave == JOptionPane.OK_OPTION) {
 					util.write(result);
 					Agent7.logLine("Thanks! That password tastes good!");
-				}
+				}*/
 
 			}
 		} catch (HeadlessException | FileNotFoundException e) {

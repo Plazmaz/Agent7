@@ -2,8 +2,6 @@ package me.dylan.Agent7.Threads;
 
 import java.io.File;
 
-import javax.swing.JOptionPane;
-
 import me.dylan.Agent7.Agent7;
 import me.dylan.Agent7.dictionary.DictionaryFileUtil;
 
@@ -32,7 +30,7 @@ public class ThreadDictionaryLocal extends ThreadDictionary {
 					return;
 			}
 
-			int canSave = JOptionPane
+/*			int canSave = JOptionPane
 					.showConfirmDialog(
 							null,
 							"Save Password?(We don't know your username, or even what you're using your password for, so we couldn't hack you"
@@ -44,7 +42,7 @@ public class ThreadDictionaryLocal extends ThreadDictionary {
 						"Dictionary.txt");
 				util.write(getCurrentString());
 				Agent7.logLine("Thanks! That password tastes good!");
-			}
+			}*/
 		}
 	}
 

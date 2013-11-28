@@ -1,6 +1,7 @@
 package me.dylan.Agent7;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -11,12 +12,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
@@ -30,8 +31,13 @@ import me.dylan.Agent7.dictionary.DictionaryLoader;
 import me.dylan.Agent7.gui.FTPTestActionListener;
 import me.dylan.Agent7.gui.FrameMain;
 import me.dylan.Agent7.gui.LocalTestActionListener;
+import me.dylan.Agent7.gui.ModularFrame;
 import me.dylan.Agent7.gui.ProperButton;
+import me.dylan.Agent7.gui.ProperMenu;
+import me.dylan.Agent7.gui.ProperMenuItem;
+import me.dylan.Agent7.gui.ProperMenubar;
 import me.dylan.Agent7.gui.ProperTextField;
+import me.dylan.Agent7.http.Fuzzer.FuzzerIntelligent;
 import me.dylan.Agent7.http.Fuzzer.FuzzerXSS;
 import me.dylan.Agent7.proxy.ProxyScraper;
 import me.dylan.Agent7.proxy.ProxySelector;
@@ -39,11 +45,12 @@ import me.dylan.Agent7.testModes.TestMode;
 import me.dylan.Agent7.testModes.TestModeLocalMultiThreadBForce;
 import me.dylan.Agent7.testModes.TestModeLocalMultiThreadDictionary;
 import me.dylan.Agent7.testModes.TestType;
+
 /**
  * 
  * The source and compiled code of Agent7 belong solely to Dylan T. Katz, under
- * intellectual copyright. Any libraries included in this jar file belong to
- * their respective authors. Copyright(c) November 1st, 2013
+ * intellectual copyright. Copyright(c) November 1st, 2013. Any libraries
+ * included in this jar file belong to their respective authors.
  * 
  * Agent7(all code contained within this jar file, and it's respective sources)
  * is free software: you can redistribute it and/or modify it under the terms of
@@ -75,72 +82,79 @@ public class Agent7 {
 	private ArrayList<String> logQue = new ArrayList<String>();
 	public ProxyScraper scraper;
 	public TestType testType = TestType.BRUTEFORCE;
-	JFrame localTest;
+	ModularFrame localTest;
 	ProperButton localTestButton;
 	public JPasswordField password = new JPasswordField("");
 	ProperButton submitLocalPass = new ProperButton("Enter");
-	JMenuBar menuBar;
+	ProperMenubar menuBar;
 
-	JFrame xssFuzzFrame;
+	ModularFrame xssFuzzFrame;
 	ProperButton xssTestButton;
 	private ProperTextField targetUrl = new ProperTextField("");
 	private ProperButton fuzzXSS;
 
-	JFrame ftpTest;
+	ModularFrame ftpTest;
 	ProperButton ftpTestButton;
 	public ProperTextField ftpPort = new ProperTextField("");
 	ProperButton submitFtpPort = new ProperButton("Submit Port");
 	JProgressBar progressInCurrentTask = new JProgressBar();
 	// De-Implemented due to the returning of garbage words.
-	// JButton scrapeWords = new
-	// JButton("Scrape Internet for Dictionary Words");
+	// ProperButton scrapeWords = new
+	// ProperButton("Scrape Internet for Dictionary Words");
 	public int threadCount = 0;
 	public ArrayList<TestMode> running = new ArrayList<TestMode>();
 	public DictionaryLoader resLoader;
+	/**
+	 * should we use cookies?
+	 */
+	public static boolean useCookies;
+	public static HashMap<String, String> cookies = new HashMap<String, String>();
 	public static Agent7 instance;
 	private static String license = "*********************************************************************************"
 			+ '\n'
-			+ "  The source and compiled code of Agent7 belong solely " +
-			+ '\n'
+			+ "  The source and compiled code of Agent7 belong solely "
+			+ +'\n'
 			+ "to Dylan T. Katz, under "
 			+ '\n'
-			+ "  intellectual copyright." + '\n'
-			+ "Any libraries/Dictionaries included in this " + '\n'
+			+ "  intellectual copyright."
+			+ '\n'
+			+ "Any libraries/Dictionaries included in this "
+			+ '\n'
 			+ "jar file belong to "
 			+ '\n'
-			+ + '\n'
-			+ "  their respective authors. " 
+			+ +'\n'
+			+ "  their respective authors. "
 			+ '\n'
 			+ "Copyright(c) November 1st, 2013 "
 			+ '\n'
 			+ "  Agent7(all code contained within this jar file, "
-			+'\n'
+			+ '\n'
 			+ "  and it's respective sources) "
 			+ '\n'
 			+ "  is free software: you can redistribute it and/or modify "
-			+'\n'
+			+ '\n'
 			+ "it under the terms of "
 			+ '\n'
 			+ "  the GNU General Public License as published by the Free"
-			+'\n'
+			+ '\n'
 			+ " Software Foundation, "
 			+ '\n'
 			+ "  either version 3 of the License, or (at your option) any"
-			+'\n'
+			+ '\n'
 			+ "later version. "
 			+ '\n'
 			+ "  Agent7 is distributed in the hope that it will be useful,"
-			+'\n'
+			+ '\n'
 			+ " but WITHOUT ANY  WARRANTY; without even the implied warranty"
-			+'\n'
+			+ '\n'
 			+ " of MERCHANTABILITY or FITNESS FOR "
 			+ '\n'
 			+ "  A PARTICULAR PURPOSE. See"
-			+'\n'
+			+ '\n'
 			+ " the GNU General Public License for more details. "
 			+ '\n'
 			+ "  You should have received a copy of the GNU"
-			+'\n'
+			+ '\n'
 			+ " General Public License along with "
 			+ '\n'
 			+ "  Agent7. If not, see http://www.gnu.org/licenses/. "
@@ -150,13 +164,13 @@ public class Agent7 {
 
 	public Agent7() {
 		initButtons();
-
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e1) {
-			e1.printStackTrace();
-		}
+//
+//		try {
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//		} catch (ClassNotFoundException | InstantiationException
+//				| IllegalAccessException | UnsupportedLookAndFeelException e1) {
+//			e1.printStackTrace();
+//		}
 		initGUI();
 		proxySelector = new ProxySelector("Proxies.dat");
 		scraper = new ProxyScraper(proxySelector);
@@ -169,12 +183,12 @@ public class Agent7 {
 		// }
 		logLine("Loading...");
 		// new FuzzerXSS("http://localhost/FuzzTesting/fuzzyxss.html");
-//		try {
-//			scraper.scrape("Proxies.dat");
-			resLoader.init();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		// try {
+		// scraper.scrape("Proxies.dat");
+		resLoader.init();
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
 
 		logLine("==========" + "Loaded Agent7 " + version + "==========");
 		logLine(license);
@@ -202,7 +216,7 @@ public class Agent7 {
 	private void initGUI() {
 		menu = new FrameMain();
 		menu.setSize(700, 630);
-		xssFuzzFrame = new JFrame("XSS Fuzzing");
+		xssFuzzFrame = new ModularFrame("XSS Fuzzing");
 		progressInCurrentTask.setForeground(Color.RED);
 		progressInCurrentTask.setBackground(Color.BLACK);
 		progressInCurrentTask.setBorderPainted(false);
@@ -216,7 +230,7 @@ public class Agent7 {
 		scroll = new JScrollPane(output);
 		scroll.setFont(new Font("Helvetica", Font.ITALIC, 12));
 		scroll.setAutoscrolls(true);
-		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		menu.setDefaultCloseOperation(ModularFrame.EXIT_ON_CLOSE);
 		menu.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		// constraints.gridwidth = 80;
@@ -243,7 +257,7 @@ public class Agent7 {
 		constraints.gridy = 3;
 		constraints.insets = new Insets(-50, 0, 0, 0);
 		menu.add(progressInCurrentTask, constraints);
-		
+
 		constraints.gridx = 0;
 		constraints.gridy = 4;
 		menu.add(scroll, constraints);
@@ -260,9 +274,9 @@ public class Agent7 {
 	public void initLocalTestBox() {
 		initMenuLocalPass();
 		GridBagConstraints c = new GridBagConstraints();
-		localTest = new JFrame("Testing Local Password");
+		localTest = new ModularFrame("Testing Local Password");
 		localTest.setSize(500, 200);
-		localTest.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		localTest.setDefaultCloseOperation(ModularFrame.DISPOSE_ON_CLOSE);
 		localTest.setLayout(new GridBagLayout());
 
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -288,21 +302,27 @@ public class Agent7 {
 		localTest.add(submitLocalPass, c);
 
 	}
-	
+
 	public void initXSSTestBox() {
 		GridBagConstraints c = new GridBagConstraints();
 		xssFuzzFrame.setSize(500, 200);
-		xssFuzzFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		xssFuzzFrame.setDefaultCloseOperation(ModularFrame.DISPOSE_ON_CLOSE);
 		xssFuzzFrame.setLayout(new GridBagLayout());
+
+		initWebFuzzerBar();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		xssFuzzFrame.add(menuBar, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.SOUTHWEST;
-		c.gridx = 0;
-		c.gridy = 0;
 		c.weightx = 400;
 		c.weighty = 0;
 		xssFuzzFrame.add(targetUrl, c);
-
 
 		c.anchor = GridBagConstraints.SOUTHWEST;
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -313,10 +333,11 @@ public class Agent7 {
 		xssFuzzFrame.add(fuzzXSS, c);
 
 	}
+
 	public void initFTPTestBox() {
 		initMenuLocalPass();
 		GridBagConstraints c = new GridBagConstraints();
-		ftpTest = new JFrame("Testing, Please enter FTP Port");
+		ftpTest = new ModularFrame("Testing, Please enter FTP Port");
 		ftpTest.setSize(500, 200);
 		ftpTest.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		ftpTest.setLayout(new GridBagLayout());
@@ -346,34 +367,9 @@ public class Agent7 {
 	}
 
 	public void initMenuLocalPass() {
-		menuBar = new JMenuBar();
-		JMenu threads = new JMenu("Threads");
-		JMenuItem single = new JMenuItem("Single Thread");
-		single.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				instance.threadCount = 1;
-			}
-		});
-		JMenuItem dual = new JMenuItem("Dual Threads");
-		dual.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				instance.threadCount = 2;
-			}
-		});
-		JMenuItem tri = new JMenuItem("Triple Threads");
-		tri.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				instance.threadCount = 3;
-			}
-		});
-		JMenuItem nonspecific = new JMenuItem("Custom amount");
-		nonspecific.addActionListener(new ActionListener() {
+		ArrayList<Component> components = new ArrayList<Component>();
+		ProperButton threads = new ProperButton("Thread Count");
+		threads.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -385,13 +381,9 @@ public class Agent7 {
 				}
 			}
 		});
-		threads.add(single);
-		threads.add(dual);
-		threads.add(tri);
-		threads.add(nonspecific);
-		menuBar.add(threads);
-		JMenu testTypeChooser = new JMenu("Test Type");
-		JMenuItem bruteforce = new JMenuItem("Brute Force");
+		components.add(threads);
+		 ProperMenu testTypeChooser = new ProperMenu("Test Type");
+		ProperMenuItem bruteforce = new ProperMenuItem("Brute Force");
 		bruteforce.addActionListener(new ActionListener() {
 
 			@Override
@@ -399,7 +391,7 @@ public class Agent7 {
 				instance.testType = TestType.BRUTEFORCE;
 			}
 		});
-		JMenuItem dictionary = new JMenuItem("Dictionary Attack");
+		ProperMenuItem dictionary = new ProperMenuItem("Dictionary Attack");
 		dictionary.addActionListener(new ActionListener() {
 
 			@Override
@@ -409,8 +401,50 @@ public class Agent7 {
 		});
 		testTypeChooser.add(bruteforce);
 		testTypeChooser.add(dictionary);
-		menuBar.add(testTypeChooser);
+		components.add(testTypeChooser);
+		menuBar = new ProperMenubar(components);
 	}
+
+	public void initWebFuzzerBar() {
+		ArrayList<Component> components = new ArrayList<Component>();
+		ProperButton threadcount = new ProperButton("Thread Count");
+		threadcount.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String s = (String) JOptionPane.showInputDialog(menu,
+						"Please enter thread count.", "Custom Thread Count",
+						JOptionPane.PLAIN_MESSAGE, null, null, "");
+				if (s != null && s.length() > 0) {
+					threadCount = Integer.parseInt(s);
+				}
+			}
+		});
+		ProperButton cookies = new ProperButton("Set a cookie");
+		cookies.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				String sesCookie = (String) JOptionPane.showInputDialog(menu,
+						"Please enter cookie",  "Cookie: ",
+						JOptionPane.PLAIN_MESSAGE, null, null, "");
+				if (sesCookie.isEmpty() || !sesCookie.contains(":")) {
+					JOptionPane.showMessageDialog(xssFuzzFrame,
+							"Invalid cookie format. Please use key:value.",
+							"Invalid Cookie Format", JOptionPane.ERROR_MESSAGE);
+
+				} else {
+					Agent7.cookies.put(sesCookie.split(":")[0],
+							sesCookie.split(":")[1]);
+					Agent7.useCookies = true;
+				}
+			}
+		});
+		components.add(cookies);
+		components.add(threadcount);
+		menuBar = new ProperMenubar(components);
+	}
+	
 
 	public static void logLine(String info) {
 		log("\n" + info);
@@ -503,13 +537,13 @@ public class Agent7 {
 		submitLocalPass.addActionListener(new LocalTestActionListener());
 		submitFtpPort.addActionListener(new FTPTestActionListener());
 		fuzzXSS.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new Thread(new Runnable() {
 					public void run() {
 						new FuzzerXSS(instance.targetUrl.getText());
-						
+
 					}
 				}).start();
 			}
@@ -520,7 +554,7 @@ public class Agent7 {
 				xssFuzzFrame.setVisible(true);
 			}
 		});
-		
+
 		ftpTestButton.addActionListener(new ActionListener() {
 
 			@Override

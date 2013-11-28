@@ -9,7 +9,6 @@ import me.dylan.Agent7.Agent7;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -56,13 +55,12 @@ public class FuzzerXSS extends Fuzzer {
 
 	public void beginInjectionForms() {
 		for (Element e : forms) {
-			if (url == null || url.isEmpty())
+			if (!e.hasAttr("action"))
 				Agent7.logLine("Could not find url, using default: " + url);
-			url = e.attr("abs:action");
+			else
+				url = e.attr("abs:action");
 			// else
 			connectionMethod = e.attr("method");
-			if (url.isEmpty())
-				continue;
 			if (connectionMethod.isEmpty())
 				connectionMethod = "GET";
 			Elements inputElements = e.getElementsByTag("input");
@@ -91,7 +89,7 @@ public class FuzzerXSS extends Fuzzer {
 							.getLocalHost().getHostAddress());
 					payload = payload.replace("#payload", "vulnerablePage"
 							+ index + "#" + name);
-					Connection connection = Jsoup.connect(url);
+					Connection connection = Fuzzer.getConnection(url);
 					verifyPayloadExecution(index, name, true);
 					sendGetPostPayloads(connection, payload);
 					verifyPayloadExecution(index, name, false); // not confirmed

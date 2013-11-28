@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import me.dylan.Agent7.Agent7;
 import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -119,7 +118,7 @@ public class FuzzerPhp extends Fuzzer {
 				payload = payload.replace("#testfile",
 						"http://www.mediafire.com/?3akbzhyfo9827nr");
 				try {
-					Connection connection = Jsoup.connect(url);
+					Connection connection = Fuzzer.getConnection(url);
 					sendGetPostPayloads(connection, payload);
 					verifyPayloadExecution(index, name);
 				} catch (IOException e) {
