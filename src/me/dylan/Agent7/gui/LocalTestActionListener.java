@@ -15,7 +15,7 @@ public class LocalTestActionListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		performLocalTest(Agent7.instance.password, Agent7.instance.threadCount);
+		performLocalTest(Agent7.instance.bfPass, Agent7.instance.threadCount);
 
 	}
 

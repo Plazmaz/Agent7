@@ -6,6 +6,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,18 +15,23 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.TitledBorder;
 
 import me.dylan.Agent7.dictionary.DictionaryLoader;
 import me.dylan.Agent7.gui.FTPTestActionListener;
@@ -67,11 +73,9 @@ import me.dylan.Agent7.testModes.TestType;
  * @version 0.0
  */
 public class Agent7 {
-	FrameMain menu;
+	public FrameMain menu = new FrameMain();
 	BoxLayout layout;
 	public static String version = "0.1a";
-	JTextArea output;
-	JScrollPane scroll;
 	public ProxySelector proxySelector;
 	public static boolean fireDrillEnabled = false;
 
@@ -79,25 +83,26 @@ public class Agent7 {
 	 * Go as fast as possible? or hold back a bit?
 	 */
 	public static boolean consumeAllPossibleRes = true;
-	private ArrayList<String> logQue = new ArrayList<String>();
 	public ProxyScraper scraper;
 	public TestType testType = TestType.BRUTEFORCE;
 	ModularFrame localTest;
-	ProperButton localTestButton;
-	public JPasswordField password = new JPasswordField("");
-	ProperButton submitLocalPass = new ProperButton("Enter");
+	public JPasswordField bfPass = new JPasswordField("");
+	ProperButton submitBFPass = new ProperButton("Go!");
 	ProperMenubar menuBar;
+	/**
+	 * Lol I know it's named local radio, but I assure you, it has good
+	 * stations.
+	 */
+	JRadioButton localradio = new JRadioButton("Local(Enter Password)");
+	JRadioButton ftpradio = new JRadioButton("FTP(Log in to FTP)");
 
-	ModularFrame xssFuzzFrame;
-	ProperButton xssTestButton;
+	ModularFrame fuzzFrame = new ModularFrame("Web Tests/Fuzz Tests");
 	private ProperTextField targetUrl = new ProperTextField("");
-	private ProperButton fuzzXSS;
+	private ProperButton submitFuzz = new ProperButton("Submit URL");
 
 	ModularFrame ftpTest;
-	ProperButton ftpTestButton;
-	public ProperTextField ftpPort = new ProperTextField("");
+	JTextField bfPort = new JTextField();
 	ProperButton submitFtpPort = new ProperButton("Submit Port");
-	JProgressBar progressInCurrentTask = new JProgressBar();
 	// De-Implemented due to the returning of garbage words.
 	// ProperButton scrapeWords = new
 	// ProperButton("Scrape Internet for Dictionary Words");
@@ -160,17 +165,15 @@ public class Agent7 {
 			+ "  Agent7. If not, see http://www.gnu.org/licenses/. "
 			+ '\n'
 			+ "*********************************************************************************";
-	public static int percentageCompleteCurrentTask = 0;
 
 	public Agent7() {
-		initButtons();
-//
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//		} catch (ClassNotFoundException | InstantiationException
-//				| IllegalAccessException | UnsupportedLookAndFeelException e1) {
-//			e1.printStackTrace();
-//		}
+		//
+		// try {
+		// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		// } catch (ClassNotFoundException | InstantiationException
+		// | IllegalAccessException | UnsupportedLookAndFeelException e1) {
+		// e1.printStackTrace();
+		// }
 		initGUI();
 		proxySelector = new ProxySelector("Proxies.dat");
 		scraper = new ProxyScraper(proxySelector);
@@ -205,109 +208,46 @@ public class Agent7 {
 
 	}
 
-	private void initButtons() {
-		localTestButton = new ProperButton("Test Local Password");
-		ftpTestButton = new ProperButton("Test FTP Password - ONLY YOUR FTP!");
-		xssTestButton = new ProperButton("Begin XSS Fuzzing");
-		fuzzXSS = new ProperButton("Submit URL");
-
-	}
-
 	private void initGUI() {
-		menu = new FrameMain();
-		menu.setSize(700, 630);
-		xssFuzzFrame = new ModularFrame("XSS Fuzzing");
-		progressInCurrentTask.setForeground(Color.RED);
-		progressInCurrentTask.setBackground(Color.BLACK);
-		progressInCurrentTask.setBorderPainted(false);
-		progressInCurrentTask.setStringPainted(true);
-		output = new JTextArea(10, 65);
-		output.setBackground(Color.BLACK);
-		output.setForeground(Color.GREEN);
-		output.setLineWrap(true);
-		// TODO: Replace with a custom class(maybe.)
-		output.setEditable(false);
-		scroll = new JScrollPane(output);
-		scroll.setFont(new Font("Helvetica", Font.ITALIC, 12));
-		scroll.setAutoscrolls(true);
-		menu.setDefaultCloseOperation(ModularFrame.EXIT_ON_CLOSE);
-		menu.setLayout(new GridBagLayout());
-		GridBagConstraints constraints = new GridBagConstraints();
-		// constraints.gridwidth = 80;
-		// constraints.gridheight = 50;
-		constraints.weightx = 1;
-		constraints.weighty = 1;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.anchor = GridBagConstraints.NORTH;
-		constraints.insets = new Insets(100, 0, 0, 0);
-		menu.add(localTestButton, constraints);
-
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		constraints.insets = new Insets(-50, 0, 0, 0);
-		menu.add(ftpTestButton, constraints);
-
-		constraints.insets = new Insets(-70, 0, 0, 0);
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		menu.add(xssTestButton, constraints);
-
-		constraints.gridx = 0;
-		constraints.gridy = 3;
-		constraints.insets = new Insets(-50, 0, 0, 0);
-		menu.add(progressInCurrentTask, constraints);
-
-		constraints.gridx = 0;
-		constraints.gridy = 4;
-		menu.add(scroll, constraints);
-		// menu.add(scrapeWords, menu);
-		menu.setVisible(true);
-		beginGUIUpdates();
-		initLocalTestBox();
+		menu.init();
+		initBruteTestBox();
 		initFTPTestBox();
 		initActionListeners();
-		initXSSTestBox();
+		initFuzzTestBox();
 
 	}
 
-	public void initLocalTestBox() {
+	public void initBruteTestBox() {
 		initMenuLocalPass();
-		GridBagConstraints c = new GridBagConstraints();
-		localTest = new ModularFrame("Testing Local Password");
-		localTest.setSize(500, 200);
-		localTest.setDefaultCloseOperation(ModularFrame.DISPOSE_ON_CLOSE);
-		localTest.setLayout(new GridBagLayout());
-
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.anchor = GridBagConstraints.SOUTHWEST;
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weightx = 400;
-		c.weighty = 0;
-		localTest.add(password, c);
-
-		c.weightx = 0;
-		c.weighty = 0;
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.NORTHWEST;
-		localTest.add(menuBar, c);
-
-		c.anchor = GridBagConstraints.SOUTHWEST;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 400;
-		c.gridy = 0;
-		c.weightx = 1;
-		c.weighty = 1;
-		localTest.add(submitLocalPass, c);
+		localTest = new ModularFrame("Testing - Brute force");
+		localTest.setSize(500, 400);
+		localTest.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		localTest.setLayout(new GridLayout(4, 2));
+		
+		JPanel attackMethods = new JPanel();
+		attackMethods.setBackground(Color.BLACK);
+//		attackMethods.setForeground(fg);
+		TitledBorder border = BorderFactory.createTitledBorder("Attack Method");
+		border.setTitleColor(Color.RED);
+		attackMethods.setBorder(border);
+		attackMethods.setLayout(new GridLayout(2, 0));
+		localradio.setBackground(Color.BLACK);
+		localradio.setForeground(Color.RED);
+		attackMethods.add(localradio);
+		attackMethods.add(bfPass);
+		ftpradio.setBackground(Color.BLACK);
+		ftpradio.setForeground(Color.RED);
+		attackMethods.add(ftpradio);
+		attackMethods.add(bfPort);
+		localTest.add(attackMethods);
 
 	}
 
-	public void initXSSTestBox() {
+	public void initFuzzTestBox() {
 		GridBagConstraints c = new GridBagConstraints();
-		xssFuzzFrame.setSize(500, 200);
-		xssFuzzFrame.setDefaultCloseOperation(ModularFrame.DISPOSE_ON_CLOSE);
-		xssFuzzFrame.setLayout(new GridBagLayout());
+		fuzzFrame.setSize(500, 200);
+		fuzzFrame.setDefaultCloseOperation(ModularFrame.DISPOSE_ON_CLOSE);
+		fuzzFrame.setLayout(new GridBagLayout());
 
 		initWebFuzzerBar();
 		c.gridx = 0;
@@ -316,13 +256,13 @@ public class Agent7 {
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.NORTHWEST;
-		xssFuzzFrame.add(menuBar, c);
+		fuzzFrame.add(menuBar, c);
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.SOUTHWEST;
 		c.weightx = 400;
 		c.weighty = 0;
-		xssFuzzFrame.add(targetUrl, c);
+		fuzzFrame.add(targetUrl, c);
 
 		c.anchor = GridBagConstraints.SOUTHWEST;
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -330,7 +270,7 @@ public class Agent7 {
 		c.gridy = 0;
 		c.weightx = 1;
 		c.weighty = 1;
-		xssFuzzFrame.add(fuzzXSS, c);
+		fuzzFrame.add(submitFuzz, c);
 
 	}
 
@@ -348,7 +288,7 @@ public class Agent7 {
 		c.gridy = 0;
 		c.weightx = 400;
 		c.weighty = 0;
-		ftpTest.add(ftpPort, c);
+		ftpTest.add(bfPort, c);
 
 		c.weightx = 0;
 		c.weighty = 0;
@@ -382,7 +322,7 @@ public class Agent7 {
 			}
 		});
 		components.add(threads);
-		 ProperMenu testTypeChooser = new ProperMenu("Test Type");
+		ProperMenu testTypeChooser = new ProperMenu("Test Type");
 		ProperMenuItem bruteforce = new ProperMenuItem("Brute Force");
 		bruteforce.addActionListener(new ActionListener() {
 
@@ -426,10 +366,10 @@ public class Agent7 {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				String sesCookie = (String) JOptionPane.showInputDialog(menu,
-						"Please enter cookie",  "Cookie: ",
+						"Please enter cookie", "Cookie: ",
 						JOptionPane.PLAIN_MESSAGE, null, null, "");
 				if (sesCookie.isEmpty() || !sesCookie.contains(":")) {
-					JOptionPane.showMessageDialog(xssFuzzFrame,
+					JOptionPane.showMessageDialog(fuzzFrame,
 							"Invalid cookie format. Please use key:value.",
 							"Invalid Cookie Format", JOptionPane.ERROR_MESSAGE);
 
@@ -444,7 +384,6 @@ public class Agent7 {
 		components.add(threadcount);
 		menuBar = new ProperMenubar(components);
 	}
-	
 
 	public static void logLine(String info) {
 		log("\n" + info);
@@ -452,58 +391,8 @@ public class Agent7 {
 	}
 
 	public static void log(String info) {
-		instance.logQue.add(info);
+		instance.menu.logQue.add(info);
 
-	}
-
-	private void beginGUIUpdates() {
-		new Thread(new Runnable() {
-			@SuppressWarnings("unchecked")
-			public void run() {
-				ArrayList<String> logData = new ArrayList<String>();
-				while (true) {
-					progressInCurrentTask
-							.setValue(percentageCompleteCurrentTask);
-					if (percentageCompleteCurrentTask > 0
-							&& percentageCompleteCurrentTask < 100) {
-
-						if (menu.getContentPane().getCursor().getType() != Cursor.WAIT_CURSOR) {
-							menu.getContentPane().setCursor(
-									new Cursor(Cursor.WAIT_CURSOR));
-						}
-					} else {
-						if (menu.getContentPane().getCursor().getType() != Cursor.DEFAULT_CURSOR) {
-							menu.getContentPane().setCursor(
-									new Cursor(Cursor.DEFAULT_CURSOR));
-						}
-
-					}
-
-					for (String info : (ArrayList<String>) logQue.clone()) {
-						if (info == null)
-							continue;
-						if (output.getLineCount() >= 2000) {
-							output.setText("");
-						}
-						logData.add(info);
-						// System.out.println(info);
-						output.setText(output.getText() + info);
-						JScrollBar sbar = scroll.getVerticalScrollBar();
-						if (output.getLineCount() >= 1) {
-							output.scrollRectToVisible(output.getVisibleRect());
-							sbar.setValue(sbar.getMaximum());
-							sbar.repaint();
-						}
-						try {
-							Thread.sleep(5);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					logQue.removeAll(logData);
-				}
-			}
-		}).start();
 	}
 
 	public void initActionListeners() {
@@ -514,7 +403,7 @@ public class Agent7 {
 		 * new Tendril(HTTPUtil.seedURL1); t.runGrowingThread(new
 		 * File("websitesCrawled.dat")); } });
 		 */
-		localTestButton.addActionListener(new ActionListener() {
+		menu.localTestButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -534,9 +423,9 @@ public class Agent7 {
 				}
 			}
 		});
-		submitLocalPass.addActionListener(new LocalTestActionListener());
-		submitFtpPort.addActionListener(new FTPTestActionListener());
-		fuzzXSS.addActionListener(new ActionListener() {
+		submitBFPass.addActionListener(new LocalTestActionListener());
+		submitFtpPort.addActionListener(new FTPTestActionListener(bfPort.getText()));
+		submitFuzz.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -548,14 +437,14 @@ public class Agent7 {
 				}).start();
 			}
 		});
-		xssTestButton.addActionListener(new ActionListener() {
+		menu.fuzzTestButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				xssFuzzFrame.setVisible(true);
+				fuzzFrame.setVisible(true);
 			}
 		});
 
-		ftpTestButton.addActionListener(new ActionListener() {
+		menu.ftpTestButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -584,7 +473,7 @@ public class Agent7 {
 	 *            - the current progress as a percentage of the progress bar.
 	 */
 	public static void setProgress(int progress) {
-		percentageCompleteCurrentTask = progress;
+		instance.menu.percentageCompleteCurrentTask = progress;
 	}
 
 }

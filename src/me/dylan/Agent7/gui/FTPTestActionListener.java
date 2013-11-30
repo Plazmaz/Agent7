@@ -11,22 +11,25 @@ import me.dylan.Agent7.testModes.TestModeFTPMultiThreadDictionary;
 import me.dylan.Agent7.testModes.TestType;
 
 public class FTPTestActionListener implements ActionListener {
-
+	String port = "";
+	public FTPTestActionListener(String port) {
+		this.port = port;
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		performFTPTest();
+		performFTPTest(port);
 	}
 
-	public void performFTPTest() {
+	public void performFTPTest(final String port) {
 		if (Agent7.instance.testType == TestType.BRUTEFORCE) {
 			int count = Agent7.instance.threadCount;
 			if (Agent7.instance.threadCount <= 0)
 				count = 10;
 			TestModeFTPMultiThreadBForce bruteforce = new TestModeFTPMultiThreadBForce();
 
-			if (!Agent7.instance.ftpPort.getText().isEmpty())
+			if (!port.isEmpty())
 				bruteforce.performTest(count,
-						Agent7.instance.ftpPort.getText(), "admin");
+						port, "admin");
 			else {
 				bruteforce.performTest(count, "21", "admin");
 			}
@@ -37,14 +40,13 @@ public class FTPTestActionListener implements ActionListener {
 						public void run() {
 							TestMode mode2 = new TestModeFTPMultiThreadDictionary();
 							try {
-								if (!Agent7.instance.ftpPort.getText().isEmpty()) {
+								if (!port.isEmpty()) {
 								((TestModeFTPMultiThreadDictionary) mode2).performTest(
 										Agent7.instance.resLoader
 												.getCurrentWords().keySet()
 												.size(),
 										"admin",
-										Integer.parseInt(Agent7.instance.ftpPort
-												.getText()));
+										Integer.parseInt(port));
 								} else {
 									((TestModeFTPMultiThreadDictionary) mode2).performTest(
 											Agent7.instance.resLoader
@@ -75,8 +77,7 @@ public class FTPTestActionListener implements ActionListener {
 							.performTest(Agent7.instance.resLoader
 									.getCurrentWords().keySet().size(),
 									"admin", Integer
-											.parseInt(Agent7.instance.ftpPort
-													.getText()));
+											.parseInt(port));
 				} catch (NumberFormatException | IOException e1) {
 					e1.printStackTrace();
 				}
