@@ -127,8 +127,8 @@ public class Agent7 {
 		// e1.printStackTrace();
 		// }
 		initGUI();
-		proxySelector = new ProxySelector("Proxies.dat");
-		scraper = new ProxyScraper(proxySelector);
+//		proxySelector = new ProxySelector("Proxies.dat");
+//		scraper = new ProxyScraper(proxySelector);
 		resLoader = new DictionaryLoader();
 		instance = this;
 		// int count = resLoader.getAllFileContents().size();
