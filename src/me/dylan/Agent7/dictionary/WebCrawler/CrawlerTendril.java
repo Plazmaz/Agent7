@@ -47,32 +47,35 @@ public class CrawlerTendril {
 							String root = sitesToVisit.get(i).baseUri()
 									.split("/")[2];
 							Document doc = sitesToVisit.get(i);
+							if (!root.equals(seedURL.split("/")[2])) {
+								Agent7.logLine("Found external link " + root
+										+ " Ignoring.");
+								continue;
+							}
 							for (IFuzzer f : tests) {
 								f.setUrl(doc.baseUri());
 								f.initializeAttack();
 							}
-							/*try {
-								if (!getIfVisited(
-										Fuzzer.getConnection(
-												"http://" + root
-														+ "/robots.txt").get(),
-										sitesVisited)) {
-									ThreadSyncCrawler.disallowed.addAll(HTTPUtil
-											.getDisallowedFromRobots(root,
-													HTTPUtil.readRobots(root)));
-
-								}
-							} catch (Exception e) {
-							}*/
+							/*
+							 * try { if (!getIfVisited( Fuzzer.getConnection(
+							 * "http://" + root + "/robots.txt").get(),
+							 * sitesVisited)) {
+							 * ThreadSyncCrawler.disallowed.addAll(HTTPUtil
+							 * .getDisallowedFromRobots(root,
+							 * HTTPUtil.readRobots(root)));
+							 * 
+							 * } } catch (Exception e) { }
+							 */
 							sitesToVisit.remove(i);
 							if (!getIfVisited(doc, sitesToVisit)
 									&& HTTPUtil.getAllowed(doc.baseUri())) {
 								Agent7.logLine("Scanning Page: "
 										+ doc.baseUri());
 								pagesVisited++;
-								for (Element e : doc.getElementsByTag("a")) {
-									sitesToVisit.add(Fuzzer.getConnection(
-											e.attr("abs:href")).get());
+								for (Element e : doc.getElementsByAttribute("href")) {
+									if(!e.attr("abs:href").isEmpty())
+										sitesToVisit.add(Fuzzer.getConnection(
+												e.attr("abs:href")).get());
 
 								}
 								sitesVisited.add(doc);

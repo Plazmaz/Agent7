@@ -43,6 +43,8 @@ public abstract class Fuzzer implements IFuzzer {
 		Connection connection = Jsoup.connect(url);
 		if (Agent7.useCookies)
 			connection.cookies(Agent7.cookies);
+		connection.timeout(10000);
+		connection.followRedirects(true);
 		connection
 				.userAgent("Agent7 - if you did not initiate this penetration test, "
 						+ "here's my ip: " + Inet4Address.getLocalHost());

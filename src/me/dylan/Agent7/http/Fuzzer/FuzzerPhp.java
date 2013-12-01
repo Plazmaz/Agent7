@@ -40,11 +40,11 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 	}
 
 	public void beginInjectionLinks() {
-		try {
-			params.addAll(getCommonURLExtensions());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			params.addAll(getCommonURLExtensions());
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		connectionMethod = "GET";
 		Agent7.logLine("Testing popular url extensions(GET).");
 		executeTestConnection(params);
@@ -81,16 +81,16 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 		}
 	}
 
-	public static ArrayList<String> getCommonURLExtensions() throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				ContentLoader.getInternalFileStream("DirList-2.3-big.txt")));
-		String s = "";
-		ArrayList<String> tmp = new ArrayList<String>();
-		while ((s = in.readLine()) != null) {
-			tmp.add(s);
-		}
-		return tmp;
-	}
+//	public static ArrayList<String> getCommonURLExtensions() throws IOException {
+//		BufferedReader in = new BufferedReader(new InputStreamReader(
+//				ContentLoader.getInternalFileStream("DirList-2.3-big.txt")));
+//		String s = "";
+//		ArrayList<String> tmp = new ArrayList<String>();
+//		while ((s = in.readLine()) != null) {
+//			tmp.add(s);
+//		}
+//		return tmp;
+//	}
 
 	@Override
 	public void beginInjection() {

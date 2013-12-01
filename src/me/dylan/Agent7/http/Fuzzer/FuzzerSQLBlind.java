@@ -40,7 +40,7 @@ public class FuzzerSQLBlind extends FuzzerSQL {
 					Connection connection = Fuzzer.getConnection(getUrl());
 					sendGetPostPayloads(connection, payload);
 					Agent7.logLine("Sent request to " + getUrl() + " Method: "
-							+ connectionMethod);
+							+ connectionMethod +" Payload: "+payload);
 					verifyPayloadExecution(index, name);
 				} catch (IOException e) {
 					e.printStackTrace();
