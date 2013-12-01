@@ -1,7 +1,5 @@
 package me.dylan.Agent7.gui;
 
-import java.awt.Color;
-
 import javax.swing.JFrame;
 
 public class ModularFrame extends JFrame {
@@ -9,7 +7,9 @@ public class ModularFrame extends JFrame {
 
 	public ModularFrame(String name) {
 		super(name);
-		this.getContentPane().setBackground(Color.BLACK);
-		this.getContentPane().setForeground(Color.GREEN);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setSize(500, 400);
+		this.getContentPane().setBackground(Colors.infoBackground1);
+		this.getContentPane().setForeground(Colors.infoColor);
 	}
 }

@@ -1,6 +1,6 @@
 package me.dylan.Agent7.testModes;
 
 public enum TestType {
-	BRUTEFORCE, DICTIONARY, @Deprecated
+	FTP, LOCAL, BRUTEFORCE, DICTIONARY, @Deprecated
 	RAINBOW
 }

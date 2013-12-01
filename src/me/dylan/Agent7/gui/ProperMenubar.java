@@ -1,6 +1,5 @@
 package me.dylan.Agent7.gui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
 
@@ -11,8 +10,8 @@ public class ProperMenubar extends JMenuBar {
 
 	public ProperMenubar(ArrayList<Component> components) {
 		super();
-		 this.setBackground(Color.BLACK);
-		 this.setForeground(Color.RED);
+		this.setBackground(Colors.inputBackground1);
+		this.setForeground(Colors.inputColor);
 		for (Component c : components) {
 			if (c instanceof ProperButton)
 				add((ProperButton) c);

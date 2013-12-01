@@ -1,13 +1,8 @@
 package me.dylan.Agent7;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -15,35 +10,20 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JProgressBar;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.TitledBorder;
 
 import me.dylan.Agent7.dictionary.DictionaryLoader;
-import me.dylan.Agent7.gui.FTPTestActionListener;
+import me.dylan.Agent7.gui.FrameBruteforce;
+import me.dylan.Agent7.gui.FrameDictionary;
+import me.dylan.Agent7.gui.FrameFuzzer;
 import me.dylan.Agent7.gui.FrameMain;
-import me.dylan.Agent7.gui.LocalTestActionListener;
 import me.dylan.Agent7.gui.ModularFrame;
 import me.dylan.Agent7.gui.ProperButton;
 import me.dylan.Agent7.gui.ProperMenu;
 import me.dylan.Agent7.gui.ProperMenuItem;
 import me.dylan.Agent7.gui.ProperMenubar;
 import me.dylan.Agent7.gui.ProperTextField;
-import me.dylan.Agent7.http.Fuzzer.FuzzerIntelligent;
 import me.dylan.Agent7.http.Fuzzer.FuzzerXSS;
 import me.dylan.Agent7.proxy.ProxyScraper;
 import me.dylan.Agent7.proxy.ProxySelector;
@@ -70,12 +50,12 @@ import me.dylan.Agent7.testModes.TestType;
  * Agent7. If not, see <a href= "http://www.gnu.org/licenses/">licenses</a>.
  * 
  * @author Dylan T. Katz
- * @version 0.0
+ * @version 1.0a
  */
 public class Agent7 {
 	public FrameMain menu = new FrameMain();
 	BoxLayout layout;
-	public static String version = "0.1a";
+	public static String version = "1.0a";
 	public ProxySelector proxySelector;
 	public static boolean fireDrillEnabled = false;
 
@@ -85,24 +65,15 @@ public class Agent7 {
 	public static boolean consumeAllPossibleRes = true;
 	public ProxyScraper scraper;
 	public TestType testType = TestType.BRUTEFORCE;
-	ModularFrame localTest;
-	public JPasswordField bfPass = new JPasswordField("");
-	ProperButton submitBFPass = new ProperButton("Go!");
+	public FrameBruteforce bruteforceTest = new FrameBruteforce(
+			"Bruteforce Tests");
 	ProperMenubar menuBar;
-	/**
-	 * Lol I know it's named local radio, but I assure you, it has good
-	 * stations.
-	 */
-	JRadioButton localradio = new JRadioButton("Local(Enter Password)");
-	JRadioButton ftpradio = new JRadioButton("FTP(Log in to FTP)");
 
-	ModularFrame fuzzFrame = new ModularFrame("Web Tests/Fuzz Tests");
+	FrameFuzzer fuzzFrame = new FrameFuzzer("Web Tests/Fuzz Tests");
 	private ProperTextField targetUrl = new ProperTextField("");
 	private ProperButton submitFuzz = new ProperButton("Submit URL");
 
-	ModularFrame ftpTest;
-	JTextField bfPort = new JTextField();
-	ProperButton submitFtpPort = new ProperButton("Submit Port");
+	FrameDictionary dictionaryTest;
 	// De-Implemented due to the returning of garbage words.
 	// ProperButton scrapeWords = new
 	// ProperButton("Scrape Internet for Dictionary Words");
@@ -115,56 +86,37 @@ public class Agent7 {
 	public static boolean useCookies;
 	public static HashMap<String, String> cookies = new HashMap<String, String>();
 	public static Agent7 instance;
-	private static String license = "*********************************************************************************"
+	private static String license =
+			"*****************************************************************************************"
 			+ '\n'
-			+ "  The source and compiled code of Agent7 belong solely "
-			+ +'\n'
-			+ "to Dylan T. Katz, under "
+			+ "The source and compiled code of Agent7 belong solely to Dylan T. Katz, under "
 			+ '\n'
-			+ "  intellectual copyright."
+			+ "intellectual copyright."
 			+ '\n'
-			+ "Any libraries/Dictionaries included in this "
-			+ '\n'
-			+ "jar file belong to "
-			+ '\n'
-			+ +'\n'
-			+ "  their respective authors. "
+			+ "Any libraries/Dictionaries included in this jar belong to their respective authors. "
 			+ '\n'
 			+ "Copyright(c) November 1st, 2013 "
 			+ '\n'
-			+ "  Agent7(all code contained within this jar file, "
 			+ '\n'
-			+ "  and it's respective sources) "
+			+ "Agent7(all code contained within this jar file, and it's respective sources)"
 			+ '\n'
-			+ "  is free software: you can redistribute it and/or modify "
+			+ "  is free software: you can redistribute it and/or modify it under the terms of"
 			+ '\n'
-			+ "it under the terms of "
+			+ " the GNU General Public License as published by the Free Software Foundation, "
 			+ '\n'
-			+ "  the GNU General Public License as published by the Free"
-			+ '\n'
-			+ " Software Foundation, "
-			+ '\n'
-			+ "  either version 3 of the License, or (at your option) any"
-			+ '\n'
-			+ "later version. "
+			+ "  either version 3 of the License, or (at your option) any later version. "
 			+ '\n'
 			+ "  Agent7 is distributed in the hope that it will be useful,"
 			+ '\n'
-			+ " but WITHOUT ANY  WARRANTY; without even the implied warranty"
+			+ " but WITHOUT ANY  WARRANTY; without even the implied warranty of "
 			+ '\n'
-			+ " of MERCHANTABILITY or FITNESS FOR "
+			+ " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License"
 			+ '\n'
-			+ "  A PARTICULAR PURPOSE. See"
+			+ " for more details.   You should have received a copy of the GNU General Public"
 			+ '\n'
-			+ " the GNU General Public License for more details. "
+			+ " License along with Agent7. If not, see http://www.gnu.org/licenses/. "
 			+ '\n'
-			+ "  You should have received a copy of the GNU"
-			+ '\n'
-			+ " General Public License along with "
-			+ '\n'
-			+ "  Agent7. If not, see http://www.gnu.org/licenses/. "
-			+ '\n'
-			+ "*********************************************************************************";
+			+ "*****************************************************************************************";
 
 	public Agent7() {
 		//
@@ -210,99 +162,22 @@ public class Agent7 {
 
 	private void initGUI() {
 		menu.init();
-		initBruteTestBox();
+		bruteforceTest.init();
 		initFTPTestBox();
 		initActionListeners();
 		initFuzzTestBox();
 
 	}
 
-	public void initBruteTestBox() {
-		initMenuLocalPass();
-		localTest = new ModularFrame("Testing - Brute force");
-		localTest.setSize(500, 400);
-		localTest.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		localTest.setLayout(new GridLayout(4, 2));
-		
-		JPanel attackMethods = new JPanel();
-		attackMethods.setBackground(Color.BLACK);
-//		attackMethods.setForeground(fg);
-		TitledBorder border = BorderFactory.createTitledBorder("Attack Method");
-		border.setTitleColor(Color.RED);
-		attackMethods.setBorder(border);
-		attackMethods.setLayout(new GridLayout(2, 0));
-		localradio.setBackground(Color.BLACK);
-		localradio.setForeground(Color.RED);
-		attackMethods.add(localradio);
-		attackMethods.add(bfPass);
-		ftpradio.setBackground(Color.BLACK);
-		ftpradio.setForeground(Color.RED);
-		attackMethods.add(ftpradio);
-		attackMethods.add(bfPort);
-		localTest.add(attackMethods);
-
-	}
-
 	public void initFuzzTestBox() {
-		GridBagConstraints c = new GridBagConstraints();
-		fuzzFrame.setSize(500, 200);
-		fuzzFrame.setDefaultCloseOperation(ModularFrame.DISPOSE_ON_CLOSE);
-		fuzzFrame.setLayout(new GridBagLayout());
-
-		initWebFuzzerBar();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weightx = 0;
-		c.weighty = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.anchor = GridBagConstraints.NORTHWEST;
-		fuzzFrame.add(menuBar, c);
-
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.anchor = GridBagConstraints.SOUTHWEST;
-		c.weightx = 400;
-		c.weighty = 0;
-		fuzzFrame.add(targetUrl, c);
-
-		c.anchor = GridBagConstraints.SOUTHWEST;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 400;
-		c.gridy = 0;
-		c.weightx = 1;
-		c.weighty = 1;
-		fuzzFrame.add(submitFuzz, c);
+		fuzzFrame.init();
 
 	}
 
 	public void initFTPTestBox() {
 		initMenuLocalPass();
-		GridBagConstraints c = new GridBagConstraints();
-		ftpTest = new ModularFrame("Testing, Please enter FTP Port");
-		ftpTest.setSize(500, 200);
-		ftpTest.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		ftpTest.setLayout(new GridBagLayout());
-
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.anchor = GridBagConstraints.SOUTHWEST;
-		c.gridx = 0;
-		c.gridy = 0;
-		c.weightx = 400;
-		c.weighty = 0;
-		ftpTest.add(bfPort, c);
-
-		c.weightx = 0;
-		c.weighty = 0;
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.NORTHWEST;
-		ftpTest.add(menuBar, c);
-
-		c.anchor = GridBagConstraints.SOUTHWEST;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 400;
-		c.gridy = 0;
-		c.weightx = 1;
-		c.weighty = 1;
-		ftpTest.add(submitFtpPort, c);
+		dictionaryTest = new FrameDictionary("Dictionary Tests");
+		dictionaryTest.init();
 
 	}
 
@@ -407,12 +282,12 @@ public class Agent7 {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				localTest.setVisible(true);
+				bruteforceTest.setVisible(true);
 
 			}
 
 		});
-		localTest.addWindowListener(new WindowAdapter() {
+		bruteforceTest.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				for (TestMode b : running) {
@@ -423,8 +298,6 @@ public class Agent7 {
 				}
 			}
 		});
-		submitBFPass.addActionListener(new LocalTestActionListener());
-		submitFtpPort.addActionListener(new FTPTestActionListener(bfPort.getText()));
 		submitFuzz.addActionListener(new ActionListener() {
 
 			@Override
@@ -448,7 +321,7 @@ public class Agent7 {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ftpTest.setVisible(true);
+				dictionaryTest.setVisible(true);
 			}
 
 		});
@@ -473,7 +346,7 @@ public class Agent7 {
 	 *            - the current progress as a percentage of the progress bar.
 	 */
 	public static void setProgress(int progress) {
-		instance.menu.percentageCompleteCurrentTask = progress;
+		FrameMain.percentageCompleteCurrentTask = progress;
 	}
 
 }

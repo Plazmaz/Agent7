@@ -1,7 +1,5 @@
 package me.dylan.Agent7.gui;
 
-import java.awt.Color;
-
 import javax.swing.JButton;
 
 /**
@@ -14,8 +12,8 @@ public class ProperButton extends JButton {
 	 public ProperButton(String label) {
 		 super(label);
 		 this.setOpaque(true);
-		 this.setBackground(/*new Color(111, 111, 111)*/Color.DARK_GRAY);
-		 this.setForeground(Color.RED);
+		 this.setBackground(Colors.inputBackground2);
+		 this.setForeground(Colors.inputColor);
 		 this.setFocusable(false);
 //		 this.setBorder(BorderFactory.createRaisedBevelBorder());
 	 }
