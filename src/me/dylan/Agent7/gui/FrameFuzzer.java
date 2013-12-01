@@ -93,6 +93,7 @@ public class FrameFuzzer extends ModularFrame {
 		controls.setBackground(Colors.infoBackground1);
 		crawl.setBackground(Colors.inputBackground1);
 		crawl.setForeground(Colors.inputColor);
+		crawl.setEnabled(true);
 		threads.setValue(1);
 		JLabel inf = new JLabel("Thread Count: ");
 		inf.setBackground(Colors.inputBackground1);
@@ -107,11 +108,13 @@ public class FrameFuzzer extends ModularFrame {
 
 	private void initAttackOptions() {
 		attackOptions.add(new JCheckBox("SQL Injection(Errors)"));
-		attackOptions.add(new JCheckBox("PHP Injection(NOT CURRENTLY FULLY FUNCTIONAL)"));
 		attackOptions.add(new JCheckBox("XSS(Script Injection)"));
 		attackOptions.add(new JCheckBox("SQL Injection(Blind)"));
 		attackOptions.add(new JCheckBox("CSRF"));
-		for (int i = 0; i < 4; i++) {
+		JCheckBox php = new JCheckBox("PHP Injection(NOT DONE)");
+		php.setEnabled(false);
+		attackOptions.add(php);
+		for (int i = 0; i < 3; i++) {
 			attackOptions.get(i).setSelected(true);
 		}
 	}

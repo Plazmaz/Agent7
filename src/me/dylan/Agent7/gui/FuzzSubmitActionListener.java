@@ -48,7 +48,7 @@ public class FuzzSubmitActionListener implements ActionListener {
 		switch (box.getText()) {
 		case "SQL Injection(Errors)":
 			return new FuzzerSQL(url);
-		case "PHP Injection(NOT CURRENTLY FULLY FUNCTIONAL)":
+		case "PHP Injection(NOT DONE)":
 			return new FuzzerPhp(url);
 		case "XSS(Script Injection)":
 			return new FuzzerXSS(url);
