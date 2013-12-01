@@ -27,7 +27,7 @@ import org.jsoup.select.Elements;
  * @author Dylan
  *
  */
-public class FuzzerIntelligent extends Fuzzer {
+public class FuzzerIntelligent extends Fuzzer implements Injector{
 	/**
 	 * Looks weird to possibly turn away some of the damn web bots... Here's
 	 * some more ips for you botters out there | 74.125.225.192:80 -
@@ -45,20 +45,21 @@ public class FuzzerIntelligent extends Fuzzer {
 		if (!url.startsWith("htt"))
 			url = "http://" + url;
 		this.url = url;
-		try {
-			// payloads = PayloadUtil.getInjectionPayloads("InteliTests.txt");
-			this.sendInitialRequest();
-			this.gatherAllFormIds();
-			this.beginInjection();
-		} catch (IllegalArgumentException e) {
+	}
 
-			Agent7.err(e);
-		}
+	public void initializeAttack() {
+		this.sendInitialRequest();
+		this.gatherAllFormIds();
+		this.beginInjection();
 	}
 
 	public void gatherInjectionStrings() {
-		payloads = Arrays.asList(HTTPUtil.sendHTTPRequest(currentIPAddress)
-				.split("\n"));
+		try {
+			payloads = Arrays.asList(HTTPUtil.sendHTTPRequest(currentIPAddress)
+					.split("\n"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -162,7 +163,7 @@ public class FuzzerIntelligent extends Fuzzer {
 		Agent7.setProgress(0);
 	}
 
-	private void verifyPayloadExecution(int index, String name) {
+	public void verifyPayloadExecution(int index, String name) {
 		String payload = payloads.get(index);
 		double beforeAfterDist = 0.0;
 		Document before = doc;

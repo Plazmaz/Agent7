@@ -5,17 +5,10 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageTypeSpecifier;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -157,7 +150,7 @@ public class FrameMain extends JFrame {
 							output.setText("");
 						}
 						logData.add(info);
-						// System.out.println(info);
+						 System.out.println(info);
 						output.setText(output.getText() + info);
 						JScrollBar sbar = scroll.getVerticalScrollBar();
 						if (output.getLineCount() >= 1) {

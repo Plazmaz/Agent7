@@ -220,45 +220,7 @@ public class Agent7 {
 		menuBar = new ProperMenubar(components);
 	}
 
-	public void initWebFuzzerBar() {
-		ArrayList<Component> components = new ArrayList<Component>();
-		ProperButton threadcount = new ProperButton("Thread Count");
-		threadcount.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				String s = (String) JOptionPane.showInputDialog(menu,
-						"Please enter thread count.", "Custom Thread Count",
-						JOptionPane.PLAIN_MESSAGE, null, null, "");
-				if (s != null && s.length() > 0) {
-					threadCount = Integer.parseInt(s);
-				}
-			}
-		});
-		ProperButton cookies = new ProperButton("Set a cookie");
-		cookies.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				String sesCookie = (String) JOptionPane.showInputDialog(menu,
-						"Please enter cookie", "Cookie: ",
-						JOptionPane.PLAIN_MESSAGE, null, null, "");
-				if (sesCookie.isEmpty() || !sesCookie.contains(":")) {
-					JOptionPane.showMessageDialog(fuzzFrame,
-							"Invalid cookie format. Please use key:value.",
-							"Invalid Cookie Format", JOptionPane.ERROR_MESSAGE);
-
-				} else {
-					Agent7.cookies.put(sesCookie.split(":")[0],
-							sesCookie.split(":")[1]);
-					Agent7.useCookies = true;
-				}
-			}
-		});
-		components.add(cookies);
-		components.add(threadcount);
-		menuBar = new ProperMenubar(components);
-	}
+	
 
 	public static void logLine(String info) {
 		log("\n" + info);

@@ -11,8 +11,13 @@ import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-public class FuzzerXSS extends Fuzzer {
+/**
+ * 
+ * Fuzz for Cross-Site Scripting exploits
+ * @author Dylan
+ *
+ */
+public class FuzzerXSS extends Fuzzer implements Injector {
 
 	public FuzzerXSS(String url) {
 		if (!url.startsWith("htt"))
@@ -20,9 +25,6 @@ public class FuzzerXSS extends Fuzzer {
 		this.url = url;
 		try {
 			payloads = PayloadUtil.getInjectionPayloads("XSSTests.txt");
-			this.sendInitialRequest();
-			this.gatherAllFormIds();
-			this.beginInjection();
 		} catch (IllegalArgumentException e) {
 
 			Agent7.err(e);
@@ -30,10 +32,15 @@ public class FuzzerXSS extends Fuzzer {
 			Agent7.err(e);
 		}
 	}
+	public void initializeAttack() {
+		this.sendInitialRequest();
+		this.gatherAllFormIds();
+		this.beginInjection();
+	}
 
 	@Override
 	public void beginInjection() {
-		Agent7.logLine("Beginning injection process.");
+		Agent7.logLine("Beginning script injection process.");
 		Agent7.logLine("Testing forms...");
 		beginInjectionForms();
 		// Agent7.logLine("Testing links...");

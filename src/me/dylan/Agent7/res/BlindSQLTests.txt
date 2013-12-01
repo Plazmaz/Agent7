@@ -1,0 +1,5 @@
+' OR SLEEP(20)='
+" OR SLEEP(20)="
+" OR SLEEP(20)){#
+\'OR SLEEP(20)=\'
+/'OR SLEEP(20)=/'

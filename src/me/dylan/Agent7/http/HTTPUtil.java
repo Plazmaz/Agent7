@@ -4,19 +4,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Inet4Address;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import me.dylan.Agent7.Threads.ThreadSyncCrawler;
 
 public class HTTPUtil {
 	public static final String seedURL1 = "http://www.google.com/adplanner/static/top1000/#";
 	static String charset = "UTF-8";
 
-	public static String sendHTTPRequest(String url) {
-		try {
+	public static String sendHTTPRequest(String url) throws IOException {
 			URL destination = new URL(url);
 			URLConnection connection = destination.openConnection();
 			connection.setRequestProperty("Accept-Charset", charset);
@@ -39,10 +40,6 @@ public class HTTPUtil {
 			}
 
 			return input.replace("<br>", "\n");
-		} catch (IOException e) {
-
-		}
-		return "";
 	}
 
 	public static ArrayList<String> getDisallowedFromRobots(String baseurl,
@@ -56,7 +53,7 @@ public class HTTPUtil {
 		return disallowed;
 	}
 
-	public static ArrayList<String> readRobots(String base) {
+	public static ArrayList<String> readRobots(String base) throws IOException {
 		String url = base + "/robots.txt";
 		String robotscontent = sendHTTPRequest(url);
 		ArrayList<String> robotdata = new ArrayList<String>();

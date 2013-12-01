@@ -13,15 +13,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public abstract class Fuzzer implements IFuzzer {
-	ArrayList<Element> forms = new ArrayList<Element>();
-	ArrayList<String> payloads = new ArrayList<String>();
+	protected ArrayList<Element> forms = new ArrayList<Element>();
+	protected ArrayList<String> payloads = new ArrayList<String>();
 	ArrayList<String> params = new ArrayList<String>();
 	Document doc = null;
-	String url = "";
+	protected String url = "";
 	String connectionMethod = "";
 
 	public void gatherAllFormIds() {
-		Agent7.logLine("Searching for possibly vunerable inputs...");
+		Agent7.logLine("Searching for possibly vunerable form inputs...");
 		for (Element e : doc.getAllElements()) {
 			if (e.className().contains("form") || e.hasAttr("method")
 					|| e.hasAttr("action")) {
@@ -35,7 +35,7 @@ public abstract class Fuzzer implements IFuzzer {
 		try {
 			doc = getConnection(url).get();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Agent7.err(e);
 		}
 	}
 

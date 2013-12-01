@@ -12,12 +12,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- * Not yet implemented, but should function properly.
+ * Fuzz for Error-Based SQL Injection exploits
  * 
  * @author Dylan
  * 
  */
-public class FuzzerSQL extends Fuzzer {
+public class FuzzerSQL extends Fuzzer implements Injector {
 
 	public FuzzerSQL(String url) {
 		if (!url.startsWith("htt"))
@@ -28,11 +28,13 @@ public class FuzzerSQL extends Fuzzer {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+	}
+	
+	public void initializeAttack() {
 		this.sendInitialRequest();
 		this.gatherAllFormIds();
 		this.beginInjection();
 	}
-
 	public void beginInjectionLinks() {
 
 		Elements linkElements = doc.getElementsByTag("a");
@@ -66,7 +68,7 @@ public class FuzzerSQL extends Fuzzer {
 
 	@Override
 	public void beginInjection() {
-		Agent7.logLine("Beginning injection process.");
+		Agent7.logLine("Beginning SQL injection process.");
 		Agent7.logLine("Testing forms...");
 		beginInjectionForms();
 	}
