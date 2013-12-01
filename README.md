@@ -4,27 +4,24 @@ An open source penetration testing tool
 
 Wiki: https://github.com/DynisDev/Agent7/wiki
 
-
-Agent7 was created in the interest of helping others. This open source, free penetration testing tool is designed to create a simple, yet secure environment for testing your code, while implementing safeguards to stop you from attacking others. If you are here to hack, leave. If you are here to test the integrity of your website, ftp server, or even just a normal password, go no further. Agent7 will   NEVER release any information about vulnerabilities and passwords.
-For more info on how to use Agent7, go to https://github.com/DynisDev/Agent7/wiki/_pages
+Agent7 was created in the interest of helping others. This open source, free penetration testing tool is designed to create a simple, yet secure environment for testing your code, while implementing safeguards to stop you from attacking others. If you are here to hack, leave. If you are here to test the integrity of your website, ftp server, or even just a normal password, go no further. Agent7 will NEVER release any information about vulnerabilities and passwords.
+For more info on how to use Agent7, go to https://github.com/DynisDev/Agent7/wiki/_pages  
 
 TODO(feel free to help me in my tasks by making a pull request.):
 
-    High priority:
-        - Re-implement URL discovery mode with php fuzzing and remove unknown blue screen of death bug created when url discovery mode is enabled.
-        
-     Lower Priority:
-     
-        - Fix intelligent fuzzer or remove it (preferably the first)
-        
-        - Fix reflected xss detection
-        
-    Aesthetic(I'll implement these last, but they can be added at any time):
-    
-        - Add themes
-        
-        - Add graph for the url fuzzer
-        
+   High priority:  
+   -------------- 
+        - Rewrite GUI ☑   
+        - Re-implement URL discovery mode with php fuzzing and remove unknown  
+        blue screen of death bug created when url discovery mode is enabled. ☐   
+   Lower Priority:  
+   --------------  
+        - Fix intelligent fuzzer or remove it (preferably the first) ☐   
+        - Fix reflected xss detection ☐   
+   Aesthetic(I'll implement these last, but they can be added at any time):
+   -------------- 
+        - Add themes ☐   
+        - Add graph for the url fuzzer ☐   
 
 License:
 
