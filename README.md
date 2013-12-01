@@ -9,14 +9,22 @@ Agent7 was created in the interest of helping others. This open source, free pen
 For more info on how to use Agent7, go to https://github.com/DynisDev/Agent7/wiki/_pages
 
 TODO(feel free to help me in my tasks by making a pull request.):
+
     High priority:
-        - Re-implement URL discovery mode with php fuzzing and remove unknown   Blue screen of death bug found when url discovery mode is enabled.
+        - Re-implement URL discovery mode with php fuzzing and remove unknown blue screen of death bug created when url discovery mode is enabled.
+        
      Lower Priority:
+     
         - Fix intelligent fuzzer or remove it (preferably the first)
+        
         - Fix reflected xss detection
+        
     Aesthetic(I'll implement these last, but they can be added at any time):
+    
         - Add themes
+        
         - Add graph for the url fuzzer
+        
 
 License:
 
