@@ -22,7 +22,7 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 	public FuzzerXSS(String url) {
 		if (!url.startsWith("htt"))
 			url = "http://" + url;
-		this.url = url;
+		this.setUrl(url);
 		try {
 			payloads = PayloadUtil.getInjectionPayloads("XSSTests.txt");
 		} catch (IllegalArgumentException e) {
@@ -43,6 +43,7 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 		Agent7.logLine("Beginning script injection process.");
 		Agent7.logLine("Testing forms...");
 		beginInjectionForms();
+		Agent7.logLine("Finished!");
 		// Agent7.logLine("Testing links...");
 		// beginInjectionLinks();
 	}
@@ -51,9 +52,9 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 
 		Elements linkElements = doc.getElementsByTag("a");
 		for (Element inputEl : linkElements) {
-			if (!inputEl.text().contains(url))
+			if (!inputEl.text().contains(getUrl()))
 				continue;
-			url = inputEl.attr("abs:href");
+			setUrl(inputEl.attr("abs:href"));
 			connectionMethod = "GET";
 			params.add(inputEl.text());
 		}
@@ -63,9 +64,9 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 	public void beginInjectionForms() {
 		for (Element e : forms) {
 			if (!e.hasAttr("action"))
-				Agent7.logLine("Could not find url, using default: " + url);
+				Agent7.logLine("Could not find url, using default: " + getUrl());
 			else
-				url = e.attr("abs:action");
+				setUrl(e.attr("abs:action"));
 			// else
 			connectionMethod = e.attr("method");
 			if (connectionMethod.isEmpty())
@@ -96,7 +97,7 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 							.getLocalHost().getHostAddress());
 					payload = payload.replace("#payload", "vulnerablePage"
 							+ index + "#" + name);
-					Connection connection = Fuzzer.getConnection(url);
+					Connection connection = Fuzzer.getConnection(getUrl());
 					verifyPayloadExecution(index, name, true);
 					sendGetPostPayloads(connection, payload);
 					verifyPayloadExecution(index, name, false); // not confirmed

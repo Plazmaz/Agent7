@@ -25,7 +25,7 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 	public FuzzerPhp(String url) {
 		if (!url.startsWith("htt"))
 			url = "http://" + url;
-		this.url = url;
+		this.setUrl(url);
 		try {
 			payloads = PayloadUtil.getInjectionPayloads("PHPTests.txt");
 		} catch (IOException e1) {
@@ -40,11 +40,11 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 	}
 
 	public void beginInjectionLinks() {
-//		try {
-//			params.addAll(getCommonURLExtensions());
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			params.addAll(getCommonURLExtensions());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		connectionMethod = "GET";
 		Agent7.logLine("Testing popular url extensions(GET).");
 		executeTestConnection(params);
@@ -65,9 +65,9 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 	public void beginInjectionForms() {
 
 		for (Element e : forms) {
-			url = e.attr("abs:action");
+			setUrl(e.attr("abs:action"));
 			connectionMethod = e.attr("method");
-			if (url.isEmpty())
+			if (getUrl().isEmpty())
 				continue;
 			if (connectionMethod.isEmpty())
 				connectionMethod = "GET";
@@ -97,8 +97,11 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 		Agent7.logLine("Beginning PHP injection process.");
 		Agent7.logLine("Testing forms...");
 		beginInjectionForms();
-		Agent7.logLine("Testing extras...");
-		beginInjectionLinks();
+		Agent7.logLine("Finished!");
+		
+//		Agent7.logLine("Testing extras...");
+//		beginInjectionLinks();
+//		Agent7.logLine("Finished!");
 	}
 
 	@Override
@@ -123,7 +126,7 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 //				payload = payload.replace("#testfile",
 //						"http://www.mediafire.com/?3akbzhyfo9827nr");
 				try {
-					Connection connection = Fuzzer.getConnection(url);
+					Connection connection = Fuzzer.getConnection(getUrl());
 					sendGetPostPayloads(connection, payload);
 					verifyPayloadExecution(index, name);
 				} catch (IOException e) {

@@ -2,10 +2,11 @@ package me.dylan.Agent7.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 
-import me.dylan.Agent7.http.Fuzzer.Fuzzer;
+import me.dylan.Agent7.dictionary.WebCrawler.CrawlerTendril;
 import me.dylan.Agent7.http.Fuzzer.FuzzerPhp;
 import me.dylan.Agent7.http.Fuzzer.FuzzerSQL;
 import me.dylan.Agent7.http.Fuzzer.FuzzerSQLBlind;
@@ -23,12 +24,21 @@ public class FuzzSubmitActionListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		new Thread(new Runnable() {
 			public void run() {
+				ArrayList<IFuzzer> tests = new ArrayList<IFuzzer>();
 				for (JCheckBox box : parent.attackOptions) {
 					if (box.isSelected()) {
 						final IFuzzer fuzzer = initializeTestForBox(box,
 								parent.url.getText());
-						fuzzer.initializeAttack();
+						if (!parent.crawl.isSelected()) {
+							fuzzer.initializeAttack();
+						} else {
+							tests.add(fuzzer);
+						}
 					}
+				}
+				if(tests.size() > 0) {
+					CrawlerTendril tendril = new CrawlerTendril(parent.url.getText(), tests);
+					tendril.runGrowingThread();
 				}
 			}
 		}).start();

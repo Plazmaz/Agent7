@@ -37,9 +37,9 @@ public class FuzzerSQLBlind extends FuzzerSQL {
 			for (String payload : payloads) {
 				try {
 					int index = payloads.indexOf(payload);
-					Connection connection = Fuzzer.getConnection(url);
+					Connection connection = Fuzzer.getConnection(getUrl());
 					sendGetPostPayloads(connection, payload);
-					Agent7.logLine("Sent request to " + url + " Method: "
+					Agent7.logLine("Sent request to " + getUrl() + " Method: "
 							+ connectionMethod);
 					verifyPayloadExecution(index, name);
 				} catch (IOException e) {
@@ -81,12 +81,13 @@ public class FuzzerSQLBlind extends FuzzerSQL {
 		Agent7.logLine("Beginning blind SQL injection process.");
 		Agent7.logLine("Testing forms...");
 		beginInjectionForms();
+		Agent7.logLine("Finished!");
 	}
 
 	@Override
 	public void verifyPayloadExecution(int index, String name) {
 		try {
-			HTTPUtil.sendHTTPRequest(url);
+			HTTPUtil.sendHTTPRequest(getUrl());
 		} catch (IOException e) {
 			if (e instanceof MalformedURLException)
 				Agent7.err(e);

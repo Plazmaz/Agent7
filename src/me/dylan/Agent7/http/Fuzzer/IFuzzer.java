@@ -15,4 +15,6 @@ public interface IFuzzer {
 	public abstract void sendInitialRequest();
 	
 	public abstract void initializeAttack();
+
+	public abstract void setUrl(String url);
 }

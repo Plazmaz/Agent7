@@ -22,7 +22,7 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 	public FuzzerSQL(String url) {
 		if (!url.startsWith("htt"))
 			url = "http://" + url;
-		this.url = url;
+		this.setUrl(url);
 		try {
 			payloads = PayloadUtil.getInjectionPayloads("SQLTests.txt");
 		} catch (IOException e1) {
@@ -39,9 +39,9 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 
 		Elements linkElements = doc.getElementsByTag("a");
 		for (Element inputEl : linkElements) {
-			if (!inputEl.text().contains(url))
+			if (!inputEl.text().contains(getUrl()))
 				continue;
-			url = inputEl.attr("abs:href");
+			setUrl(inputEl.attr("abs:href"));
 			connectionMethod = "GET";
 			params.add(inputEl.text());
 		}
@@ -50,9 +50,9 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 
 	public void beginInjectionForms() {
 		for (Element e : forms) {
-			url = e.attr("abs:action");
+			setUrl(e.attr("abs:action"));
 			connectionMethod = e.attr("method");
-			if (url.isEmpty())
+			if (getUrl().isEmpty())
 				continue;
 			if (connectionMethod.isEmpty())
 				connectionMethod = "GET";
@@ -71,6 +71,7 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 		Agent7.logLine("Beginning SQL injection process.");
 		Agent7.logLine("Testing forms...");
 		beginInjectionForms();
+		Agent7.logLine("Finished!");
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 			for (String payload : payloads) {
 				try {
 					int index = payloads.indexOf(payload);
-					Connection connection = Fuzzer.getConnection(url);
+					Connection connection = Fuzzer.getConnection(getUrl());
 					sendGetPostPayloads(connection, payload);
 					verifyPayloadExecution(index, name);
 				} catch (IOException e) {

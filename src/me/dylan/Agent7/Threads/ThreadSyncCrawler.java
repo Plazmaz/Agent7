@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import me.dylan.Agent7.dictionary.WebCrawler.Tendril;
-import me.dylan.Agent7.http.Webpage;
-import me.dylan.Agent7.http.Website;
+import org.jsoup.nodes.Document;
+
+import me.dylan.Agent7.dictionary.WebCrawler.CrawlerTendril;
 
 
 public class ThreadSyncCrawler {
-	public static ArrayList<Tendril> tendrils = new ArrayList<Tendril>();
-	public static ArrayList<Webpage> sitesVisited = new ArrayList<Webpage>();
-	public static HashMap<String, Website> allRoots = new HashMap<String, Website>();
+	public static ArrayList<CrawlerTendril> tendrils = new ArrayList<CrawlerTendril>();
+	public static ArrayList<Document> sitesVisited = new ArrayList<Document>();
+	public static HashMap<String, Document> allRoots = new HashMap<String, Document>();
 	public static AtomicInteger uid = new AtomicInteger(0);
 	public static ArrayList<String> disallowed = new ArrayList<String>();
 }

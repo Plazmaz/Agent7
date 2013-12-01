@@ -16,7 +16,7 @@ public class FuzzerCSRF extends Fuzzer {
 	public FuzzerCSRF(String url) {
 		if (!url.startsWith("htt"))
 			url = "http://" + url;
-		this.url = url;
+		this.setUrl(url);
 		try {
 			payloads = PayloadUtil.getInjectionPayloads("SQLTests.txt");
 		} catch (IOException e1) {

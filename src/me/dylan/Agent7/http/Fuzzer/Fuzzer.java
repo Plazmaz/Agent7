@@ -17,7 +17,7 @@ public abstract class Fuzzer implements IFuzzer {
 	protected ArrayList<String> payloads = new ArrayList<String>();
 	ArrayList<String> params = new ArrayList<String>();
 	Document doc = null;
-	protected String url = "";
+	private String url = "";
 	String connectionMethod = "";
 
 	public void gatherAllFormIds() {
@@ -33,7 +33,7 @@ public abstract class Fuzzer implements IFuzzer {
 	public void sendInitialRequest() {
 		Agent7.logLine("Retrieving initial webpage data.");
 		try {
-			doc = getConnection(url).get();
+			doc = getConnection(getUrl()).get();
 		} catch (IOException e) {
 			Agent7.err(e);
 		}
@@ -47,6 +47,14 @@ public abstract class Fuzzer implements IFuzzer {
 				.userAgent("Agent7 - if you did not initiate this penetration test, "
 						+ "here's my ip: " + Inet4Address.getLocalHost());
 		return connection;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 }

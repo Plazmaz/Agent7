@@ -44,7 +44,7 @@ public class FuzzerIntelligent extends Fuzzer implements Injector{
 		super();
 		if (!url.startsWith("htt"))
 			url = "http://" + url;
-		this.url = url;
+		this.setUrl(url);
 	}
 
 	public void initializeAttack() {
@@ -116,12 +116,12 @@ public class FuzzerIntelligent extends Fuzzer implements Injector{
 	@Override
 	public void beginInjectionForms() {
 		for (Element e : forms) {
-			if (url == null || url.isEmpty())
-				Agent7.logLine("Could not find url, using default: " + url);
-			url = e.attr("abs:action");
+			if (getUrl() == null || getUrl().isEmpty())
+				Agent7.logLine("Could not find url, using default: " + getUrl());
+			setUrl(e.attr("abs:action"));
 			// else
 			connectionMethod = e.attr("method");
-			if (url.isEmpty())
+			if (getUrl().isEmpty())
 				continue;
 			if (connectionMethod.isEmpty())
 				connectionMethod = "GET";
@@ -167,7 +167,7 @@ public class FuzzerIntelligent extends Fuzzer implements Injector{
 		String payload = payloads.get(index);
 		double beforeAfterDist = 0.0;
 		Document before = doc;
-		sendGetPostPayloads(Jsoup.connect(url), payload);
+		sendGetPostPayloads(Jsoup.connect(getUrl()), payload);
 		Document after = doc;
 		beforeAfterDist = StringUtils.getLevenshteinDistance(before.html(),
 				after.html());
