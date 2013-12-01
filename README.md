@@ -24,7 +24,7 @@ TODO(feel free to help me in my tasks by making a pull request.):
         - Add graph for the url fuzzer ☐   
 
 License:
-
+  ----
   The source and compiled code of Agent7 belong solely to Dylan T. Katz, under
   intellectual copyright. Any libraries included in this jar file belong to
   their respective authors. Copyright(c) November 1st, 2013
