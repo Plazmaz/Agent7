@@ -147,10 +147,9 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 			throws UnknownHostException {
 		Element e = doc.getElementById("vulnerablePage" + index + "#" + name);
 		if (e != null
-				&& !e.parents().html().contains("noscript")
 				&& e.data().contains(
 						Inet4Address.getLocalHost().getHostAddress()))
-			Agent7.logLine("Found vunerability using payload: "
+			warning("Found vunerability using payload: "
 					+ payloads.get(index) + " On form: " + name);
 	}
 

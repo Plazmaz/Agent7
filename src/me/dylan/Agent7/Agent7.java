@@ -58,7 +58,7 @@ public class Agent7 {
 	public static String version = "1.0a";
 	public ProxySelector proxySelector;
 	public static boolean fireDrillEnabled = false;
-
+	public static ArrayList<String> warnings = new ArrayList<String>();
 	/**
 	 * Go as fast as possible? or hold back a bit?
 	 */
@@ -258,18 +258,6 @@ public class Agent7 {
 					if (b instanceof TestModeLocalMultiThreadDictionary)
 						((TestModeLocalMultiThreadDictionary) b).endTest();
 				}
-			}
-		});
-		submitFuzz.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				new Thread(new Runnable() {
-					public void run() {
-						new FuzzerXSS(instance.targetUrl.getText());
-
-					}
-				}).start();
 			}
 		});
 		menu.fuzzTestButton.addActionListener(new ActionListener() {

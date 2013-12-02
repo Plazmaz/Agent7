@@ -94,7 +94,7 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 	public void verifyPayloadExecution(int index, String name)
 			throws UnknownHostException {
 		if (doc.html().toLowerCase()
-				.contains("you have an error in your sql syntax;")
+				.contains("you have an error in your sql syntax")
 				|| doc.html().toLowerCase()
 						.contains("sql command not properly ended")
 				|| doc.html()
@@ -105,7 +105,7 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 						.toLowerCase()
 						.contains(
 								"query failed: error: syntax error at or near"))
-			Agent7.logLine("Found vunerability using payload: "
+			warning("Found vunerability using payload: "
 					+ payloads.get(index) + " On form: " + name);
 	}
 

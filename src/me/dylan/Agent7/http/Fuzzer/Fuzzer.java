@@ -5,6 +5,8 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import me.dylan.Agent7.Agent7;
 
 import org.jsoup.Connection;
@@ -31,7 +33,7 @@ public abstract class Fuzzer implements IFuzzer {
 	}
 
 	public void sendInitialRequest() {
-		Agent7.logLine("Retrieving initial webpage data.");
+		Agent7.logLine("Retrieving webpage data from site "+getUrl());
 		try {
 			doc = getConnection(getUrl()).get();
 		} catch (IOException e) {
@@ -57,6 +59,9 @@ public abstract class Fuzzer implements IFuzzer {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public void warning(String warning) {
+		JOptionPane.showConfirmDialog(Agent7.instance.menu, warning);
 	}
 
 }

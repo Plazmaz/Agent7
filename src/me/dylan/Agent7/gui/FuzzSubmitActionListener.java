@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JCheckBox;
 
 import me.dylan.Agent7.dictionary.WebCrawler.CrawlerTendril;
+import me.dylan.Agent7.http.Fuzzer.FuzzerCSRF;
 import me.dylan.Agent7.http.Fuzzer.FuzzerPhp;
 import me.dylan.Agent7.http.Fuzzer.FuzzerSQL;
 import me.dylan.Agent7.http.Fuzzer.FuzzerSQLBlind;

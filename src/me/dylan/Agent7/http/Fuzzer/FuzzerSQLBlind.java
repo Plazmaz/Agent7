@@ -39,14 +39,15 @@ public class FuzzerSQLBlind extends FuzzerSQL {
 					int index = payloads.indexOf(payload);
 					Connection connection = Fuzzer.getConnection(getUrl());
 					sendGetPostPayloads(connection, payload);
-					Agent7.logLine("Sent request to " + getUrl() + " Method: "
-							+ connectionMethod +" Payload: "+payload);
 					verifyPayloadExecution(index, name);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				
 			}
+			
 		}
+		
 	}
 
 	public void sendGetPostPayloads(Connection connection, String payload) {
@@ -65,13 +66,13 @@ public class FuzzerSQLBlind extends FuzzerSQL {
 					doc = response.parse();
 				}
 			} catch (SocketTimeoutException e) {
-				Agent7.logLine("Found blind sql injection exploit with payload: "
-						+ payload + " On form: " + param);
+				confirm(payload, param);
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
 
 	}
@@ -92,10 +93,20 @@ public class FuzzerSQLBlind extends FuzzerSQL {
 			if (e instanceof MalformedURLException)
 				Agent7.err(e);
 			else
-				Agent7.logLine("Found blind sql injection exploit with payload: "
-						+ payloads.get(index) + " On form: " + name);
+				confirm(payloads.get(index), name);
 		}
 
+	}
+
+	public void confirm(String payload, String formname) {
+
+		warning("Found likely blind sql injection exploit with payload: "
+				+ payload
+				+ " On form: "
+				+ formname
+				+ " URL: "
+				+ getUrl()
+				+ " Method: " + connectionMethod);
 	}
 
 }

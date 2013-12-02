@@ -129,7 +129,7 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 				&& !e.parents().html().contains("noscript")
 				&& e.data().contains(
 						Inet4Address.getLocalHost().getHostAddress()))
-			Agent7.logLine("Found " + (saved ? "stored" : "local")
+			warning("Found " + (saved ? "stored" : "local")
 					+ " vunerability using payload: " + payloads.get(index)
 					+ " On form: " + name);
 	}
