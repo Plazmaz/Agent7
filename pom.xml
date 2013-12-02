@@ -6,12 +6,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-net-3.3.jar</artifactId>
+			<artifactId>commons-net</artifactId>
 			<version>3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons.lang3</groupId>
-			<artifactId>commons-lang3-3.1.jar</artifactId>
+			<artifactId>commons-lang</artifactId>
 			<version>3-3.1</version>
 		</dependency>
 		<dependency>
