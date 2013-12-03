@@ -32,15 +32,38 @@ public class HTTPUtil {
 					connection.getInputStream()));
 			String input = "";
 			String curLine;
-			while ((curLine = data.readLine()) != null) {
-				input += curLine;
-			}
 			for (String key : connection.getHeaderFields().keySet()) {
 				input += connection.getHeaderField(key);
 			}
+			while ((curLine = data.readLine()) != null) {
+				input += curLine;
+			}
 
-			return input.replace("<br>", "\n");
+			return input;
 	}
+	public static String sendHTTPPing(String url) throws IOException {
+		URL destination = new URL(url);
+		URLConnection connection = destination.openConnection();
+		connection.setRequestProperty("Accept-Charset", charset);
+		//Yes, We're lying to the server. This is because our current host doesn't like
+		//custom user strings.
+		connection.setRequestProperty("User-agent",
+				"Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
+		connection.setRequestProperty("Content-Type",
+				"application/x-www-form-urlencoded;charset=" + charset);
+
+		BufferedReader data = new BufferedReader(new InputStreamReader(
+				connection.getInputStream()));
+		String input = "";
+		String curLine;
+		for (String key : connection.getHeaderFields().keySet()) {
+			input += connection.getHeaderField(key);
+		}
+		while ((curLine = data.readLine()) != null) {
+			input += curLine;
+		}
+		return input;
+}
 
 	public static ArrayList<String> getDisallowedFromRobots(String baseurl,
 			ArrayList<String> robots) {

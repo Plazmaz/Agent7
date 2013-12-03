@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class ContentLoader {
 	public static BufferedImage getImageFromInternalFile(String internalFilePath)
 			throws IOException {
-		return ImageIO.read(ContentLoader.class.getResource(internalFilePath));
+		return ImageIO.read(getInternalFileStream(internalFilePath));
 		
 	}
 	public static InputStream getInternalFileStream(String internalFilePath) throws IOException {

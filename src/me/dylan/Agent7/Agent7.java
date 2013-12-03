@@ -53,7 +53,7 @@ import me.dylan.Agent7.testModes.TestType;
  * @version 1.0a
  */
 public class Agent7 {
-	public FrameMain menu = new FrameMain();
+	public FrameMain menu;
 	BoxLayout layout;
 	public static String version = "1.2a";
 	public ProxySelector proxySelector;
@@ -137,6 +137,14 @@ public class Agent7 {
 		// return;
 		// }
 		logLine("Loading...");
+		if(InitialDownloadPing.getFirstTime()) {
+			try {
+				InitialDownloadPing.createInitFile();
+				InitialDownloadPing.sendInitialDownloadPing();
+			} catch(Exception e) {
+				
+			}
+		}
 		// new FuzzerXSS("http://localhost/FuzzTesting/fuzzyxss.html");
 		// try {
 		// scraper.scrape("Proxies.dat");
@@ -161,6 +169,7 @@ public class Agent7 {
 	}
 
 	private void initGUI() {
+		menu = new FrameMain();
 		menu.init();
 		bruteforceTest.init();
 		initFTPTestBox();
