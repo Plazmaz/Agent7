@@ -1,5 +1,4 @@
-##Deprecated, as this is fixed in most current versions of PHP(will still probably
-##be included)
+##Deprecated temporarily
 ##Remote file inclusion:
 #testfile
 ##Normal php injection:

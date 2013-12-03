@@ -19,7 +19,7 @@ import me.dylan.Agent7.http.HTTPUtil;
 public class InitialDownloadPing {
 	public static void sendInitialDownloadPing() {
 		try {
-			Agent7.logLine(HTTPUtil.sendHTTPPing("http://a7pi.zxq.net/Agent7-Ping.php"));
+			HTTPUtil.sendHTTPPing("http://a7pi.zxq.net/Agent7-Ping.php");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
