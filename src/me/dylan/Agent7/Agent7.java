@@ -55,7 +55,7 @@ import me.dylan.Agent7.testModes.TestType;
 public class Agent7 {
 	public FrameMain menu;
 	BoxLayout layout;
-	public static String version = "1.2a";
+	public static String version = "1.2.1a";
 	public ProxySelector proxySelector;
 	public static boolean fireDrillEnabled = false;
 	public static ArrayList<String> warnings = new ArrayList<String>();

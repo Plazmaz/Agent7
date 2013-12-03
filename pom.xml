@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>me.dylan.Agent7</groupId>
 	<artifactId>Agent7</artifactId>
-	<version>1.2</version>
+	<version>1.2.1</version>
 	<dependencies>
 		<dependency>
 			<groupId>commons-net</groupId>
