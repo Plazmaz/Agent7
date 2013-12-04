@@ -1,12 +1,11 @@
 package me.dylan.Agent7;
 
 import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,13 +17,10 @@ import me.dylan.Agent7.gui.FrameBruteforce;
 import me.dylan.Agent7.gui.FrameDictionary;
 import me.dylan.Agent7.gui.FrameFuzzer;
 import me.dylan.Agent7.gui.FrameMain;
-import me.dylan.Agent7.gui.ModularFrame;
 import me.dylan.Agent7.gui.ProperButton;
 import me.dylan.Agent7.gui.ProperMenu;
 import me.dylan.Agent7.gui.ProperMenuItem;
 import me.dylan.Agent7.gui.ProperMenubar;
-import me.dylan.Agent7.gui.ProperTextField;
-import me.dylan.Agent7.http.Fuzzer.FuzzerXSS;
 import me.dylan.Agent7.proxy.ProxyScraper;
 import me.dylan.Agent7.proxy.ProxySelector;
 import me.dylan.Agent7.testModes.TestMode;
@@ -50,12 +46,12 @@ import me.dylan.Agent7.testModes.TestType;
  * Agent7. If not, see <a href= "http://www.gnu.org/licenses/">licenses</a>.
  * 
  * @author Dylan T. Katz
- * @version 1.0a
+ * @version 1.2.2a
  */
 public class Agent7 {
 	public FrameMain menu;
 	BoxLayout layout;
-	public static String version = "1.2.1a";
+	public static String version = "1.2.2a";
 	public ProxySelector proxySelector;
 	public static boolean fireDrillEnabled = false;
 	public static ArrayList<String> warnings = new ArrayList<String>();
@@ -70,8 +66,6 @@ public class Agent7 {
 	ProperMenubar menuBar;
 
 	FrameFuzzer fuzzFrame = new FrameFuzzer("Web Tests/Fuzz Tests");
-	private ProperTextField targetUrl = new ProperTextField("");
-	private ProperButton submitFuzz = new ProperButton("Submit URL");
 
 	FrameDictionary dictionaryTest;
 	// De-Implemented due to the returning of garbage words.
@@ -137,14 +131,15 @@ public class Agent7 {
 		// return;
 		// }
 		logLine("Loading...");
-		if(InitialDownloadPing.getFirstTime()) {
+		if(ServerUtils.getFirstTime()) {
 			try {
-				InitialDownloadPing.createInitFile();
-				InitialDownloadPing.sendInitialDownloadPing();
+				ServerUtils.createInitFile();
+				ServerUtils.sendInitialDownloadPing();
 			} catch(Exception e) {
 				
 			}
 		}
+		ServerUtils.update();
 		// new FuzzerXSS("http://localhost/FuzzTesting/fuzzyxss.html");
 		// try {
 		// scraper.scrape("Proxies.dat");
@@ -164,6 +159,14 @@ public class Agent7 {
 	}
 
 	public static void main(String[] args) {
+		if(args.length > 1) {
+			if(Boolean.getBoolean(args[0])) {
+				File file = new File("Agent7.tmp.jar");
+				ServerUtils.copyJar(file, new File(args[1]));
+				file.delete();
+				
+			}
+		}
 		new Agent7();
 
 	}

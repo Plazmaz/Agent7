@@ -56,9 +56,9 @@ public class HTTPUtil {
 				connection.getInputStream()));
 		String input = "";
 		String curLine;
-		for (String key : connection.getHeaderFields().keySet()) {
-			input += connection.getHeaderField(key);
-		}
+//		for (String key : connection.getHeaderFields().keySet()) {
+//			input += connection.getHeaderField(key);
+//		}
 		while ((curLine = data.readLine()) != null) {
 			input += curLine;
 		}
