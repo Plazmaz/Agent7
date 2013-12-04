@@ -45,13 +45,4 @@ For more info on how to use Agent7, go to https://github.com/DynisDev/Agent7/wik
   ----
   Copyright(c) November 1st, 2013 Dylan T. Katz
   
-  Agent7(all code contained within this jar file, and it's respective sources)
-  is free software: you can redistribute it and/or modify it under the terms of
-  the GNU General Public License as published by the Free Software Foundation,
-  either version 3 of the License, or (at your option) any later version.
-  Agent7 is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-  A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-  
-  You should have received a copy of the GNU General Public License along with
-  Agent7. If not, see http://www.gnu.org/licenses/
+  For the newest license, see the LICENSE.txt in this github repo.
