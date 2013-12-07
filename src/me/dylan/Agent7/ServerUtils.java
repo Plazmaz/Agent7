@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.CodeSource;
@@ -17,13 +18,6 @@ import java.util.jar.JarOutputStream;
 
 import me.dylan.Agent7.http.HTTPUtil;
 
-/**
- * This class is simply to gather the amount of downloads, and auto-update. I
- * don't creep on any of you guys, don't worry.
- * 
- * @author Dylan
- * 
- */
 public class ServerUtils {
 	public static void sendInitialDownloadPing() {
 		try {
@@ -41,78 +35,84 @@ public class ServerUtils {
 		try {
 			data = HTTPUtil.sendHTTPPing("http://a7pi.zxq.net/version.txt");
 		} catch (IOException e) {
-			Agent7.logLine("Error updating program: " + e.getMessage());
+			Agent7.logLine("Error checking for updates: "
+					+ e.getLocalizedMessage());
+			return;
 		}
 		String version = data.split("\n")[0];
 		if (!Agent7.version.equalsIgnoreCase(version)) {
-			version = version.replaceAll("a", "").replaceAll("b", "");
-			String download = "https://drone.io/github.com/DynisDev/Agent7/files/target/Agent7-"
-					+ version + ".jar";
+			String download = "https://github.com/DynisDev/Agent7/releases/download/v"
+					+ version + "/Agent7_v" + version + ".jar";
 			String destination = getJarPath();
 			try {
 				saveUrl("Agent7.tmp.jar", download);
 				Agent7.logLine("Updating... File destination: " + destination);
 
-				Runtime.getRuntime().exec("java -jar Agent7.tmp.jar true "+ destination);
+				Runtime.getRuntime().exec(
+						"java -jar Agent7.tmp.jar true " + destination);
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				System.exit(0);
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Agent7.logLine("Error: Update failed. Issue: " + e.getMessage());
+				return;
 			}
-			System.exit(0);
 		}
 	}
+
 	/**
-	 * Credits to http://javahowto.blogspot.com/2011/07/how-to-programmatically-copy-jar-files.html
+	 * Credits to
+	 * http://javahowto.blogspot.com/2011/07/how-to-programmatically-copy
+	 * -jar-files.html
 	 */
 	public static void copyJar(File src, File target) {
-		if(!src.exists())
+		if (!src.exists())
 			return;
-		if(!target.exists()) {
+		if (!target.exists()) {
 			target.mkdirs();
 			try {
 				target.createNewFile();
 			} catch (IOException e) {
-				Agent7.logLine("Failed to update: "+e.getMessage());
+				Agent7.logLine("Failed to update: " + e.getMessage());
 				return;
 			}
 		}
 		try {
-	       JarFile jar = new JarFile(src);
-	 
-	       JarOutputStream jos = new JarOutputStream(new FileOutputStream(target));
-	       Enumeration<JarEntry> entries = jar.entries();
-	 
-	       while (entries.hasMoreElements()) {
-	           JarEntry entry = entries.nextElement();
-	           InputStream is = jar.getInputStream(entry);
-	           jos.putNextEntry(new JarEntry(entry.getName()));
-	           byte[] buffer = new byte[4096];
-	           int bytesRead = 0;
-	           while ((bytesRead = is.read(buffer)) != -1) {
-	               jos.write(buffer, 0, bytesRead);
-	           }
-	           is.close();
-	           jos.flush();
-	           jos.closeEntry();
-	       }
-	       jos.close();
-	       jar.close();
+			JarFile jar = new JarFile(src);
+
+			JarOutputStream jos = new JarOutputStream(new FileOutputStream(
+					target));
+			Enumeration<JarEntry> entries = jar.entries();
+
+			while (entries.hasMoreElements()) {
+				JarEntry entry = entries.nextElement();
+				InputStream is = jar.getInputStream(entry);
+				jos.putNextEntry(new JarEntry(entry.getName()));
+				byte[] buffer = new byte[4096];
+				int bytesRead = 0;
+				while ((bytesRead = is.read(buffer)) != -1) {
+					jos.write(buffer, 0, bytesRead);
+				}
+				is.close();
+				jos.flush();
+				jos.closeEntry();
+			}
+			jos.close();
+			jar.close();
 		} catch (FileNotFoundException ex) {
-			Agent7.logLine("Failed to update: "+ex.getMessage());
+			Agent7.logLine("Failed to update: " + ex.getMessage());
 		} catch (IOException ex) {
-			Agent7.logLine("Failed to update: "+ex.getMessage());
+			Agent7.logLine("Failed to update: " + ex.getMessage());
 		}
 	}
 
 	public static void saveUrl(String filename, String urlString)
 			throws MalformedURLException, IOException {
-		if(!new File(filename).exists()) {
+		if (!new File(filename).exists()) {
 			File f = new File(filename);
 			f.createNewFile();
 		}
@@ -139,7 +139,12 @@ public class ServerUtils {
 		try {
 			File dir = new File(System.getProperty("user.home") + "/Agent7");
 			dir.mkdirs();
-			new File(dir, "booted.dat").createNewFile();
+			File f = new File(dir, "booted.dat");
+			f.createNewFile();
+			PrintWriter write = new PrintWriter(f);
+			write.write("This program was written by a 15 year old."
+					+ "SHH! I don't want people to judge me because of it.");
+			write.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -150,10 +155,10 @@ public class ServerUtils {
 				(System.getProperty("user.home") + "/Agent7/booted.dat"))
 				.exists();
 	}
-	
+
 	public static String getJarPath() {
-		ProtectionDomain pd= Agent7.class.getProtectionDomain();
-		CodeSource cs= pd.getCodeSource();
+		ProtectionDomain pd = Agent7.class.getProtectionDomain();
+		CodeSource cs = pd.getCodeSource();
 		String destination = cs.getLocation().getPath();
 		return destination;
 	}

@@ -23,6 +23,7 @@ public class FrameFuzzer extends ModularFrame {
 	private static final long serialVersionUID = -6767156220174748902L;
 	ProperTextField url = new ProperTextField("");
 	ArrayList<JCheckBox> attackOptions = new ArrayList<JCheckBox>();
+	public static ProperTextField useragent = new ProperTextField("");
 	JCheckBox crawl = new JCheckBox("Crawl?");
 	ProperButton cookie = new ProperButton("Set a cookie");
 	ProperButton go = new ProperButton("Go!");
@@ -37,21 +38,24 @@ public class FrameFuzzer extends ModularFrame {
 	public void init() {
 		initAttackOptions();
 		this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
-		JPanel urlPanel = new JPanel();
-		urlPanel.setBackground(Colors.inputBackground1);
+		JPanel strParamsPanel = new JPanel();
+		strParamsPanel.setBackground(Colors.inputBackground1);
 		int rows = 3;
 		int cols = 1;
-		urlPanel.setLayout(new GridLayout(rows, cols));
+		strParamsPanel.setLayout(new GridLayout(rows, cols));
 		JLabel label = new JLabel("URL: ");
 		label.setForeground(Colors.infoColor);
-		urlPanel.add(label);
-		urlPanel.add(url);
-		for (int i = 0; i < (rows * cols) - 2; i++) {
-			urlPanel.add(Box.createHorizontalBox());
-			urlPanel.add(Box.createVerticalBox());
+		strParamsPanel.add(label);
+		strParamsPanel.add(url);
+		JLabel userAgentLabel = new JLabel("User-Agent: ");
+		strParamsPanel.add(userAgentLabel);
+		strParamsPanel.add(useragent);
+		for (int i = 0; i < (rows * cols) - 4; i++) {
+			strParamsPanel.add(Box.createHorizontalBox());
+			strParamsPanel.add(Box.createVerticalBox());
 		}
 
-		this.add(urlPanel);
+		this.add(strParamsPanel);
 
 		JPanel options = new JPanel();
 		options.setBackground(Colors.inputBackground1);
@@ -94,13 +98,13 @@ public class FrameFuzzer extends ModularFrame {
 		crawl.setBackground(Colors.inputBackground1);
 		crawl.setForeground(Colors.inputColor);
 		crawl.setEnabled(true);
-		threads.setValue(1);
-		JLabel inf = new JLabel("Thread Count: ");
-		inf.setBackground(Colors.inputBackground1);
-		inf.setForeground(Colors.inputColor);
+//		threads.setValue(1);
+//		JLabel inf = new JLabel("Thread Count: ");
+//		inf.setBackground(Colors.inputBackground1);
+//		inf.setForeground(Colors.inputColor);
 		controls.add(crawl);
-		controls.add(inf);
-		controls.add(threads);
+//		controls.add(inf);
+//		controls.add(threads);
 		go.addActionListener(new FuzzSubmitActionListener(this));
 		controls.add(go);
 		this.add(controls);

@@ -30,28 +30,14 @@ import me.dylan.Agent7.testModes.TestType;
 
 /**
  * 
- * The source and compiled code of Agent7 belong solely to Dylan T. Katz, under
- * intellectual copyright. Copyright(c) November 1st, 2013. Any libraries
- * included in this jar file belong to their respective authors.
- * 
- * Agent7(all code contained within this jar file, and it's respective sources)
- * is free software: you can redistribute it and/or modify it under the terms of
- * the GNU General Public License as published by the Free Software Foundation,
- * either version 3 of the License, or (at your option) any later version.
- * Agent7 is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * Agent7. If not, see <a href= "http://www.gnu.org/licenses/">licenses</a>.
- * 
+ * For License, see http://creativecommons.org/licenses/by-sa/4.0/
  * @author Dylan T. Katz
- * @version 1.2.2a
+ * @version 1.0b
  */
 public class Agent7 {
 	public FrameMain menu;
 	BoxLayout layout;
-	public static String version = "1.2.2a";
+	public static String version = "1.0b";
 	public ProxySelector proxySelector;
 	public static boolean fireDrillEnabled = false;
 	public static ArrayList<String> warnings = new ArrayList<String>();
@@ -68,9 +54,6 @@ public class Agent7 {
 	FrameFuzzer fuzzFrame = new FrameFuzzer("Web Tests/Fuzz Tests");
 
 	FrameDictionary dictionaryTest;
-	// De-Implemented due to the returning of garbage words.
-	// ProperButton scrapeWords = new
-	// ProperButton("Scrape Internet for Dictionary Words");
 	public int threadCount = 0;
 	public ArrayList<TestMode> running = new ArrayList<TestMode>();
 	public DictionaryLoader resLoader;
@@ -80,35 +63,13 @@ public class Agent7 {
 	public static boolean useCookies;
 	public static HashMap<String, String> cookies = new HashMap<String, String>();
 	public static Agent7 instance;
-	private static String license =
-			"*****************************************************************************************"
+	private static String license = "*****************************************************************************************"
 			+ '\n'
-			+ "The source and compiled code of Agent7 belong solely to Dylan T. Katz, under "
+			+ "For The license agreement of this program, please see "
 			+ '\n'
-			+ "intellectual copyright."
+			+ "http://creativecommons.org/licenses/by-sa/4.0/ By using(pressing buttons,"
 			+ '\n'
-			+ "Any libraries/Dictionaries included in this jar belong to their respective authors. "
-			+ '\n'
-			+ "Copyright(c) November 1st, 2013 "
-			+ '\n'
-			+ '\n'
-			+ "Agent7(all code contained within this jar file, and it's respective sources)"
-			+ '\n'
-			+ "  is free software: you can redistribute it and/or modify it under the terms of"
-			+ '\n'
-			+ " the GNU General Public License as published by the Free Software Foundation, "
-			+ '\n'
-			+ "  either version 3 of the License, or (at your option) any later version. "
-			+ '\n'
-			+ "  Agent7 is distributed in the hope that it will be useful,"
-			+ '\n'
-			+ " but WITHOUT ANY  WARRANTY; without even the implied warranty of "
-			+ '\n'
-			+ " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License"
-			+ '\n'
-			+ " for more details.   You should have received a copy of the GNU General Public"
-			+ '\n'
-			+ " License along with Agent7. If not, see http://www.gnu.org/licenses/. "
+			+ "running tests, etc), you agree to these terms."
 			+ '\n'
 			+ "*****************************************************************************************";
 
@@ -121,8 +82,8 @@ public class Agent7 {
 		// e1.printStackTrace();
 		// }
 		initGUI();
-//		proxySelector = new ProxySelector("Proxies.dat");
-//		scraper = new ProxyScraper(proxySelector);
+		// proxySelector = new ProxySelector("Proxies.dat");
+		// scraper = new ProxyScraper(proxySelector);
 		resLoader = new DictionaryLoader();
 		instance = this;
 		// int count = resLoader.getAllFileContents().size();
@@ -131,12 +92,12 @@ public class Agent7 {
 		// return;
 		// }
 		logLine("Loading...");
-		if(ServerUtils.getFirstTime()) {
+		if (ServerUtils.getFirstTime()) {
 			try {
 				ServerUtils.createInitFile();
 				ServerUtils.sendInitialDownloadPing();
-			} catch(Exception e) {
-				
+			} catch (Exception e) {
+
 			}
 		}
 		ServerUtils.update();
@@ -159,12 +120,12 @@ public class Agent7 {
 	}
 
 	public static void main(String[] args) {
-		if(args.length > 1) {
-			if(Boolean.getBoolean(args[0])) {
+		if (args.length > 1) {
+			if (Boolean.getBoolean(args[0])) {
 				File file = new File("Agent7.tmp.jar");
 				ServerUtils.copyJar(file, new File(args[1]));
 				file.delete();
-				
+
 			}
 		}
 		new Agent7();
@@ -231,8 +192,6 @@ public class Agent7 {
 		components.add(testTypeChooser);
 		menuBar = new ProperMenubar(components);
 	}
-
-	
 
 	public static void logLine(String info) {
 		log("\n" + info);
