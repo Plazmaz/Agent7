@@ -3,6 +3,9 @@ Agent7
 An open source penetration testing tool
 
 Wiki: https://github.com/DynisDev/Agent7/wiki  
+
+Creator: Dylan Katz 
+Homescreen background and program theme: Kevyn Latham
 **IMPORTANT**
   --------
   Agent7 is not intended for use without consent of the website owner and in some cases, the website host. On website builders such as weebly and webs, you would need consent from company hosting your site, and providing your web building service. If Agent7 is used for malicious purposes such as hacking/compromising databases, the responsibility is that of the end user. Developers assume no liability and are not responsible for misuse or damage caused when using this program for unintended purposes. This program is **ONLY** for use where you have consent from a person or persons classified to give you consent to use it, and only where they give you consent to use it.
