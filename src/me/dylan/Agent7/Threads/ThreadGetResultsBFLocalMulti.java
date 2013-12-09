@@ -16,6 +16,7 @@ public class ThreadGetResultsBFLocalMulti extends Thread {
 		allThreads = threads.clone();
 	}
 
+	@Override
 	public void run() {
 		result = "";
 		while (threadsFinished < allThreads.length) {

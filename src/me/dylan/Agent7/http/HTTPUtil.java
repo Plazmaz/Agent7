@@ -5,14 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.Inet4Address;
-import java.net.MalformedURLException;
+import java.net.InetAddress;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import me.dylan.Agent7.Agent7;
 import me.dylan.Agent7.Threads.ThreadSyncCrawler;
 import me.dylan.Agent7.gui.FrameFuzzer;
@@ -29,7 +24,7 @@ public class HTTPUtil {
 			connection.setRequestProperty("User-agent",
 					"Agent7 - if you did not initiate this penetration test, "
 							+ "here's my ip: "
-							+ Inet4Address.getLocalHost().getHostAddress());
+							+ InetAddress.getLocalHost().getHostAddress());
 		} else {
 			connection.setRequestProperty("User-agent",
 					FrameFuzzer.useragent.getText());
@@ -41,7 +36,7 @@ public class HTTPUtil {
 		connection.setDoOutput(true);
         OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
         wr.write("v=Agent7_v"+Agent7.version);
-        wr.write("ip="+Inet4Address.getLocalHost().getAddress());
+        wr.write("ip="+InetAddress.getLocalHost().getAddress());
 		BufferedReader data = new BufferedReader(new InputStreamReader(
 				connection.getInputStream()));
 		String input = "";
@@ -73,7 +68,7 @@ public class HTTPUtil {
 		connection.setDoOutput(true);
         OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
         wr.write("v=Agent7_v"+Agent7.version);
-        wr.write("ip="+Inet4Address.getLocalHost().getAddress());
+        wr.write("ip="+InetAddress.getLocalHost().getAddress());
 		BufferedReader data = new BufferedReader(new InputStreamReader(
 				connection.getInputStream()));
 		String input = "";

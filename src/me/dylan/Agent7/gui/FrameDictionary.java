@@ -8,6 +8,7 @@ public class FrameDictionary extends FrameBruteforce {
 		super(name);
 	}
 
+	@Override
 	public void initActionListeners() {
 		submitData.addActionListener(new DictionaryActionListener(this));
 	}

@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import me.dylan.Agent7.Agent7;
+import me.dylan.Agent7.VulnerabilityData;
+import me.dylan.Agent7.gui.FrameResult;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
@@ -12,7 +13,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- * Fuzz for Error-Based SQL Injection exploits
+ * Fuzzer for Error-Based SQL Injection exploits
  * 
  * @author Dylan
  * 
@@ -29,12 +30,14 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 			e1.printStackTrace();
 		}
 	}
-	
+
+	@Override
 	public void initializeAttack() {
 		this.sendInitialRequest();
 		this.gatherAllFormIds();
 		this.beginInjection();
 	}
+
 	public void beginInjectionLinks() {
 
 		Elements linkElements = doc.getElementsByTag("a");
@@ -48,12 +51,13 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 		executeTestConnection(params);
 	}
 
+	@Override
 	public void beginInjectionForms() {
 		for (Element e : forms) {
-			setUrl(e.attr("abs:action"));
 			connectionMethod = e.attr("method");
-			if (getUrl().isEmpty())
-				continue;
+			if (e.hasAttr("abs:action"))
+				setUrl(e.attr("abs:action"));
+
 			if (connectionMethod.isEmpty())
 				connectionMethod = "GET";
 			Elements inputElements = e.getElementsByTag("input");
@@ -63,15 +67,16 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 				params.add(inputEl.attr("name"));
 			}
 			executeTestConnection(params);
+
 		}
 	}
 
 	@Override
 	public void beginInjection() {
-		Agent7.logLine("Beginning SQL injection process.");
-		Agent7.logLine("Testing forms...");
+		info("Beginning SQL injection process.");
+		info("Testing forms...");
 		beginInjectionForms();
-		Agent7.logLine("Finished!");
+		info("Finished!");
 	}
 
 	@Override
@@ -88,7 +93,6 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 				}
 			}
 		}
-		// Agent7.logLine(doc.html());
 	}
 
 	public void verifyPayloadExecution(int index, String name)
@@ -105,10 +109,11 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 						.toLowerCase()
 						.contains(
 								"query failed: error: syntax error at or near"))
-			warning("Found vunerability using payload: "
-					+ payloads.get(index) + " On form: " + name);
+			FrameResult.urgent(new VulnerabilityData(this.getFriendlyName(),
+					payloads.get(index), name, getUrl(), connectionMethod));
 	}
 
+	@Override
 	public void sendGetPostPayloads(Connection connection, String payload) {
 		for (String param : params) {
 			if (param.isEmpty())
@@ -129,6 +134,11 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public String getFriendlyName() {
+		return "SQL Injector";
 	}
 
 }

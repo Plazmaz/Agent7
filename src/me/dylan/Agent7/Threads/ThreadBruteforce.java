@@ -102,6 +102,7 @@ public class ThreadBruteforce extends Thread {
 		return curStr;
 	}
 
+	@Override
 	public void run() {
 		while (!this.isFinished && !this.isInterrupted()) {
 			currentPasswordTesting = getNextPass(getPassLength(), 0);

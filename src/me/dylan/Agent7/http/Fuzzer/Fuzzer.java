@@ -1,13 +1,15 @@
 package me.dylan.Agent7.http.Fuzzer;
 
 import java.io.IOException;
-import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import me.dylan.Agent7.Agent7;
+import me.dylan.Agent7.VulnerabilityData;
+import me.dylan.Agent7.gui.FrameResult;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -22,8 +24,9 @@ public abstract class Fuzzer implements IFuzzer {
 	private String url = "";
 	String connectionMethod = "";
 
+	@Override
 	public void gatherAllFormIds() {
-		Agent7.logLine("Searching for possibly vunerable form inputs...");
+		info("Searching for possibly vunerable form inputs...");
 		for (Element e : doc.getAllElements()) {
 			if (e.className().contains("form") || e.hasAttr("method")
 					|| e.hasAttr("action")) {
@@ -32,12 +35,13 @@ public abstract class Fuzzer implements IFuzzer {
 		}
 	}
 
+	@Override
 	public void sendInitialRequest() {
-		Agent7.logLine("Retrieving webpage data from site "+getUrl());
+		info("Retrieving webpage data from site "+getUrl());
 		try {
 			doc = getConnection(getUrl()).get();
 		} catch (IOException e) {
-			Agent7.err(e);
+			err(e);
 		}
 	}
 
@@ -49,7 +53,7 @@ public abstract class Fuzzer implements IFuzzer {
 		connection.followRedirects(true);
 		connection
 				.userAgent("Agent7 - if you did not initiate this penetration test, "
-						+ "here's my ip: " + Inet4Address.getLocalHost());
+						+ "here's my ip: " + InetAddress.getLocalHost());
 		return connection;
 	}
 
@@ -57,11 +61,24 @@ public abstract class Fuzzer implements IFuzzer {
 		return url;
 	}
 
+	@Override
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public void warning(String warning) {
-		JOptionPane.showConfirmDialog(Agent7.instance.menu, warning);
+	
+	@Override
+	public void info(String info) {
+		Agent7.logLine("["+this.getFriendlyName()+"] "+info);
+	}
+	
+	@Override
+	public void err(Exception e) {
+		Agent7.logLine("["+this.getFriendlyName()+"] An error occured: "+e.getMessage());		
+	}
+	
+	
+	public String getFriendlyName() {
+		return "Fuzzer Generic";
 	}
 
 }

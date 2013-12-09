@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import me.dylan.Agent7.Agent7;
+import me.dylan.Agent7.VulnerabilityData;
+import me.dylan.Agent7.gui.FrameResult;
 import me.dylan.Agent7.http.HTTPUtil;
 
 public class FuzzerSQLBlind extends FuzzerSQL {
@@ -43,13 +43,14 @@ public class FuzzerSQLBlind extends FuzzerSQL {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+
 			}
-			
+
 		}
-		
+
 	}
 
+	@Override
 	public void sendGetPostPayloads(Connection connection, String payload) {
 		for (String param : params) {
 			if (param.isEmpty())
@@ -72,17 +73,17 @@ public class FuzzerSQLBlind extends FuzzerSQL {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 
 	}
 
 	@Override
 	public void beginInjection() {
-		Agent7.logLine("Beginning blind SQL injection process.");
-		Agent7.logLine("Testing forms...");
+		info("Beginning blind SQL injection process.");
+		info("Testing forms...");
 		beginInjectionForms();
-		Agent7.logLine("Finished!");
+		info("Finished!");
 	}
 
 	@Override
@@ -91,7 +92,7 @@ public class FuzzerSQLBlind extends FuzzerSQL {
 			HTTPUtil.sendHTTPRequest(getUrl());
 		} catch (IOException e) {
 			if (e instanceof MalformedURLException)
-				Agent7.err(e);
+				err(e);
 			else
 				confirm(payloads.get(index), name);
 		}
@@ -99,14 +100,13 @@ public class FuzzerSQLBlind extends FuzzerSQL {
 	}
 
 	public void confirm(String payload, String formname) {
+		FrameResult.urgent(new VulnerabilityData(this.getFriendlyName(),
+				payload, formname, getUrl(), connectionMethod));
+	}
 
-		warning("Found likely blind sql injection exploit with payload: "
-				+ payload
-				+ " On form: "
-				+ formname
-				+ " URL: "
-				+ getUrl()
-				+ " Method: " + connectionMethod);
+	@Override
+	public String getFriendlyName() {
+		return "Blind SQL Injector";
 	}
 
 }

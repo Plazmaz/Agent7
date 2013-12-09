@@ -45,6 +45,7 @@ public class DictionaryActionListener implements ActionListener {
 				}
 
 				new Thread(new Runnable() {
+					@Override
 					public void run() {
 						TestMode mode2 = new TestModeLocalMultiThreadDictionary();
 						((TestModeLocalMultiThreadDictionary) mode2)

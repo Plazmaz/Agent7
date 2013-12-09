@@ -35,6 +35,7 @@ public class ThreadDictionaryFTP extends ThreadDictionary {
 	 * the only way I could make it work.
 	 * Any assistance would be appreciated.
 	 */
+	@Override
 	public void run() {
 		while (!this.getVerified() && !this.isInterrupted()) {
 			if (getComparisons() + offset < Agent7.instance.resLoader

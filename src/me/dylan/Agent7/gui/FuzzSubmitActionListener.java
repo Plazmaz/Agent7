@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 
+import me.dylan.Agent7.Agent7;
 import me.dylan.Agent7.dictionary.WebCrawler.CrawlerTendril;
 import me.dylan.Agent7.http.Fuzzer.FuzzerCSRF;
 import me.dylan.Agent7.http.Fuzzer.FuzzerPhp;
@@ -24,6 +25,7 @@ public class FuzzSubmitActionListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		new Thread(new Runnable() {
+			@Override
 			public void run() {
 				ArrayList<IFuzzer> tests = new ArrayList<IFuzzer>();
 				for (JCheckBox box : parent.attackOptions) {
@@ -37,6 +39,7 @@ public class FuzzSubmitActionListener implements ActionListener {
 						}
 					}
 				}
+				Agent7.results.init();
 				if(tests.size() > 0) {
 					CrawlerTendril tendril = new CrawlerTendril(parent.url.getText(), tests);
 					tendril.runGrowingThread();
@@ -49,7 +52,7 @@ public class FuzzSubmitActionListener implements ActionListener {
 		switch (box.getText()) {
 		case "SQL Injection(Errors)":
 			return new FuzzerSQL(url);
-		case "PHP Injection(NOT DONE)":
+		case "PHP Injection(SLOW)":
 			return new FuzzerPhp(url);
 		case "XSS(Script Injection)":
 			return new FuzzerXSS(url);

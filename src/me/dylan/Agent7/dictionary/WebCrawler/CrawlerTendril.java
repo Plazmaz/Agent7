@@ -3,14 +3,11 @@ package me.dylan.Agent7.dictionary.WebCrawler;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import me.dylan.Agent7.Agent7;
-import me.dylan.Agent7.Threads.ThreadSyncCrawler;
 import me.dylan.Agent7.http.HTTPUtil;
-import me.dylan.Agent7.http.Website;
 import me.dylan.Agent7.http.Fuzzer.Fuzzer;
 import me.dylan.Agent7.http.Fuzzer.IFuzzer;
 
@@ -39,6 +36,7 @@ public class CrawlerTendril {
 
 	public void runGrowingThread() {
 		tendrilTh = new Thread(new Runnable() {
+			@Override
 			public void run() {
 				while (true) {
 					try {

@@ -3,11 +3,14 @@ package me.dylan.Agent7.http.Fuzzer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import me.dylan.Agent7.Agent7;
+import me.dylan.Agent7.VulnerabilityData;
+import me.dylan.Agent7.gui.FrameMain;
+import me.dylan.Agent7.gui.FrameResult;
 import me.dylan.Agent7.res.ContentLoader;
 
 import org.jsoup.Connection;
@@ -33,6 +36,7 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 		}
 	}
 
+	@Override
 	public void initializeAttack() {
 		this.sendInitialRequest();
 		this.gatherAllFormIds();
@@ -40,28 +44,24 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 	}
 
 	public void beginInjectionLinks() {
-//		try {
-//			params.addAll(getCommonURLExtensions());
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		// Elements linkElements = doc.getElementsByAttribute("href");
+		try {
+			params.addAll(getCommonURLExtensions());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		info("Testing popular url extensions(GET).");
 		connectionMethod = "GET";
-		Agent7.logLine("Testing popular url extensions(GET).");
 		executeTestConnection(params);
 
+		info("Testing popular url extensions(POST).");
 		connectionMethod = "POST";
-		Agent7.logLine("Testing popular url extensions(POST).");
 		executeTestConnection(params);
-		params.clear();
-		/*
-		 * Elements linkElements = doc.getElementsByTag("a"); for (Element
-		 * inputEl : linkElements) { if (!inputEl.text().contains(url))
-		 * continue; url = inputEl.attr("abs:href"); connectionMethod = "GET";
-		 * params.add(inputEl.text()); }
-		 */
-		executeTestConnection(params);
+
 	}
 
+	@Override
 	public void beginInjectionForms() {
 
 		for (Element e : forms) {
@@ -81,34 +81,38 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 		}
 	}
 
-//	public static ArrayList<String> getCommonURLExtensions() throws IOException {
-//		BufferedReader in = new BufferedReader(new InputStreamReader(
-//				ContentLoader.getInternalFileStream("DirList-2.3-big.txt")));
-//		String s = "";
-//		ArrayList<String> tmp = new ArrayList<String>();
-//		while ((s = in.readLine()) != null) {
-//			tmp.add(s);
-//		}
-//		return tmp;
-//	}
+	public static ArrayList<String> getCommonURLExtensions() throws IOException {
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				ContentLoader.getInternalFileStream("OWASPDIR.TXT")));
+		String s = "";
+		ArrayList<String> tmp = new ArrayList<String>();
+		while ((s = in.readLine()) != null) {
+			if (!s.startsWith("#") && !s.isEmpty())
+				tmp.add(s);
+		}
+		return tmp;
+	}
 
 	@Override
 	public void beginInjection() {
-		Agent7.logLine("Beginning PHP injection process.");
-		Agent7.logLine("Testing forms...");
+		info("Beginning PHP injection process.");
+		info("Testing forms...");
 		beginInjectionForms();
-		Agent7.logLine("Finished!");
-		
-//		Agent7.logLine("Testing extras...");
-//		beginInjectionLinks();
-//		Agent7.logLine("Finished!");
+		info("Finished!");
+
+		info("Testing extras...");
+		beginInjectionLinks();
+		info("Finished!");
 	}
 
 	@Override
 	public void executeTestConnection(ArrayList<String> params) {
+		FrameMain.setTask("Injecting...");
 		int queriesAttempted = 0;
 		for (String name : params) {
 			for (String payload : payloads) {
+				FrameMain.setTask("Injecting... Current param: \"" + name
+						+ "\", payload:\"" + payload + "\"");
 				int index = payloads.indexOf(payload);
 				queriesAttempted++;
 				double progress = ((double) (queriesAttempted) / (double) ((payloads
@@ -116,15 +120,15 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 				Agent7.setProgress((int) Math.ceil(progress));
 
 				try {
-					payload = payload.replace("#ip", Inet4Address
-							.getLocalHost().getHostAddress());
+					payload = payload.replace("#ip", InetAddress.getLocalHost()
+							.getHostAddress());
 				} catch (UnknownHostException e1) {
 					e1.printStackTrace();
 				}
 				payload = payload.replace("#payload", "vulnerablePage" + index
 						+ "#" + name);
-//				payload = payload.replace("#testfile",
-//						"http://www.mediafire.com/?3akbzhyfo9827nr");
+				// payload = payload.replace("#testfile",
+				// "http://www.mediafire.com/?3akbzhyfo9827nr");
 				try {
 					Connection connection = Fuzzer.getConnection(getUrl());
 					sendGetPostPayloads(connection, payload);
@@ -140,7 +144,7 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 				}
 			}
 		}
-		// Agent7.logLine(doc.html());
+		FrameMain.setTask("Awaiting commands...");
 	}
 
 	public void verifyPayloadExecution(int index, String name)
@@ -148,11 +152,13 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 		Element e = doc.getElementById("vulnerablePage" + index + "#" + name);
 		if (e != null
 				&& e.data().contains(
-						Inet4Address.getLocalHost().getHostAddress()))
-			warning("Found vunerability using payload: "
-					+ payloads.get(index) + " On form: " + name);
+						InetAddress.getLocalHost().getHostAddress())) {
+			FrameResult.urgent(new VulnerabilityData(this.getFriendlyName(),
+					payloads.get(index), name, getUrl(), connectionMethod));
+		}
 	}
 
+	@Override
 	public void sendGetPostPayloads(Connection connection, String payload) {
 		for (String param : params) {
 			if (param.isEmpty())
@@ -175,4 +181,8 @@ public class FuzzerPhp extends Fuzzer implements Injector {
 
 	}
 
+	@Override
+	public String getFriendlyName() {
+		return "PHP Injector";
+	}
 }

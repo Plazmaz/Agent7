@@ -1,21 +1,25 @@
 package me.dylan.Agent7.http.Fuzzer;
 
 import java.io.IOException;
-import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import me.dylan.Agent7.Agent7;
+import me.dylan.Agent7.VulnerabilityData;
+import me.dylan.Agent7.gui.FrameResult;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 /**
  * 
  * Fuzz for Cross-Site Scripting exploits
+ * 
  * @author Dylan
- *
+ * 
  */
 public class FuzzerXSS extends Fuzzer implements Injector {
 
@@ -27,11 +31,13 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 			payloads = PayloadUtil.getInjectionPayloads("XSSTests.txt");
 		} catch (IllegalArgumentException e) {
 
-			Agent7.err(e);
+			err(e);
 		} catch (IOException e) {
-			Agent7.err(e);
+			err(e);
 		}
 	}
+
+	@Override
 	public void initializeAttack() {
 		this.sendInitialRequest();
 		this.gatherAllFormIds();
@@ -40,11 +46,11 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 
 	@Override
 	public void beginInjection() {
-		Agent7.logLine("Beginning script injection process.");
-		Agent7.logLine("Testing forms...");
+		info("Beginning script injection process.");
+		info("Testing forms...");
 		beginInjectionForms();
-		Agent7.logLine("Finished!");
-		// Agent7.logLine("Testing links...");
+		info("Finished!");
+		// info("Testing links...");
 		// beginInjectionLinks();
 	}
 
@@ -61,10 +67,11 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 		executeTestConnection(params);
 	}
 
+	@Override
 	public void beginInjectionForms() {
 		for (Element e : forms) {
 			if (!e.hasAttr("action"))
-				Agent7.logLine("Could not find url, using default: " + getUrl());
+				info("Could not find url, using default: " + getUrl());
 			else
 				setUrl(e.attr("abs:action"));
 			// else
@@ -93,8 +100,8 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 							.size() * params.size()))) * 100;
 					Agent7.setProgress((int) Math.ceil(progress));
 
-					payload = payload.replace("#ip", Inet4Address
-							.getLocalHost().getHostAddress());
+					payload = payload.replace("#ip", InetAddress.getLocalHost()
+							.getHostAddress());
 					payload = payload.replace("#payload", "vulnerablePage"
 							+ index + "#" + name);
 					Connection connection = Fuzzer.getConnection(getUrl());
@@ -107,7 +114,6 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 				}
 			}
 		}
-		// Agent7.logLine(doc.html());
 		Agent7.setProgress(0);
 	}
 
@@ -128,12 +134,12 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 		if (e != null
 				&& !e.parents().html().contains("noscript")
 				&& e.data().contains(
-						Inet4Address.getLocalHost().getHostAddress()))
-			warning("Found " + (saved ? "stored" : "local")
-					+ " vunerability using payload: " + payloads.get(index)
-					+ " On form: " + name);
+						InetAddress.getLocalHost().getHostAddress()))
+			FrameResult.urgent(new VulnerabilityData(this.getFriendlyName(),
+					payloads.get(index), name, getUrl(), connectionMethod));
 	}
 
+	@Override
 	public void sendGetPostPayloads(Connection connection, String payload) {
 		for (String param : params) {
 			if (param.isEmpty())
@@ -154,5 +160,10 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public String getFriendlyName() {
+		return "Javascript Injector(XSS)";
 	}
 }

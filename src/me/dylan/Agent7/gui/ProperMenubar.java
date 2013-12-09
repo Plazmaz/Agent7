@@ -14,7 +14,7 @@ public class ProperMenubar extends JMenuBar {
 		this.setForeground(Colors.inputColor);
 		for (Component c : components) {
 			if (c instanceof ProperButton)
-				add((ProperButton) c);
+				add(c);
 			else
 				add(c);
 		}

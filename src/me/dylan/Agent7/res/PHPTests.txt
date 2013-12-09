@@ -1,6 +1,6 @@
 ##Deprecated temporarily
 ##Remote file inclusion:
-#testfile
+##testfile
 ##Normal php injection:
 ; echo '<div style="visibility: hidden" id=#payload>#ip</div>';
 ';echo '<div style="visibility: hidden" id=#payload>#ip</div>';

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Element;
 
-import me.dylan.Agent7.Agent7;
-
 public class FuzzerCSRF extends Fuzzer {
 
 	public FuzzerCSRF(String url) {
@@ -37,9 +35,13 @@ public class FuzzerCSRF extends Fuzzer {
 	public void verifyPayloadExecution() {
 		for (Element e : forms) {
 			if (!e.hasAttr("method") || e.attr("method").toLowerCase() == "get") {
-				Agent7.logLine("Warning: Possible vulnerability on form, id: "
+				info("Warning: Possible vulnerability on form, id: "
 						+ e.id() + " type: CSRF - Cross-site Request Forgery");
 			}
 		}
+	}
+	@Override
+	public String getFriendlyName() {
+		return "CSRF Fuzzer";
 	}
 }

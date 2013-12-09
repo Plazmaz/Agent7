@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class Colors {
 	public static Color inputColor = Color.RED;
-	public static Color infoColor = Color.GREEN;
+	public static Color infoColor = Color.WHITE;
 	public static Color titlesColor = Color.RED;
 	public static Color inputBackground1 = Color.BLACK;
 	public static Color inputBackground2 = Color.DARK_GRAY;

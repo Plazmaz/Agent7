@@ -84,7 +84,7 @@ public class FrameMain extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		buttons = new JPanel();
 		widthDivisor = 1.5;
-		buttons.setLocation((int) (getWidth() / 2)
+		buttons.setLocation(getWidth() / 2
 				- (int) (getWidth() / (widthDivisor * 2)), getHeight() / 8);
 		buttons.setBackground(Colors.inputBackground1);
 		buttons.setBorder(BorderFactory.createBevelBorder(2));
@@ -126,6 +126,7 @@ public class FrameMain extends JFrame {
 
 	private void beginGUIUpdates() {
 		new Thread(new Runnable() {
+			@Override
 			@SuppressWarnings("unchecked")
 			public void run() {
 				ArrayList<String> logData = new ArrayList<String>();
@@ -134,7 +135,7 @@ public class FrameMain extends JFrame {
 					height = getHeight();
 					background.setSize(width-15, height-30);
 					background.repaint();
-					buttons.setLocation((int) (getWidth() / 2)
+					buttons.setLocation(getWidth() / 2
 							- (int) (getWidth() / (widthDivisor * 2)),
 							getHeight() / 8);
 					buttons.setSize(new Dimension(

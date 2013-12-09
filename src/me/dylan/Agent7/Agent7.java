@@ -17,6 +17,7 @@ import me.dylan.Agent7.gui.FrameBruteforce;
 import me.dylan.Agent7.gui.FrameDictionary;
 import me.dylan.Agent7.gui.FrameFuzzer;
 import me.dylan.Agent7.gui.FrameMain;
+import me.dylan.Agent7.gui.FrameResult;
 import me.dylan.Agent7.gui.ProperButton;
 import me.dylan.Agent7.gui.ProperMenu;
 import me.dylan.Agent7.gui.ProperMenuItem;
@@ -32,15 +33,15 @@ import me.dylan.Agent7.testModes.TestType;
  * 
  * For License, see http://creativecommons.org/licenses/by-sa/4.0/
  * @author Dylan T. Katz
- * @version 1.0b
+ * @version 1.2.3a
  */
 public class Agent7 {
 	public FrameMain menu;
+	public static FrameResult results = new FrameResult();
 	BoxLayout layout;
-	public static String version = "1.0b";
+	public static String version = "1.2.3a";
 	public ProxySelector proxySelector;
 	public static boolean fireDrillEnabled = false;
-	public static ArrayList<String> warnings = new ArrayList<String>();
 	/**
 	 * Go as fast as possible? or hold back a bit?
 	 */
@@ -67,9 +68,7 @@ public class Agent7 {
 			+ '\n'
 			+ "For The license agreement of this program, please see "
 			+ '\n'
-			+ "http://creativecommons.org/licenses/by-sa/4.0/ By using(pressing buttons,"
-			+ '\n'
-			+ "running tests, etc), you agree to these terms."
+			+ "http://creativecommons.org/licenses/by-sa/4.0/"
 			+ '\n'
 			+ "*****************************************************************************************";
 

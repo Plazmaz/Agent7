@@ -48,6 +48,7 @@ public class FrameFuzzer extends ModularFrame {
 		strParamsPanel.add(label);
 		strParamsPanel.add(url);
 		JLabel userAgentLabel = new JLabel("User-Agent: ");
+		userAgentLabel.setForeground(Colors.infoColor);
 		strParamsPanel.add(userAgentLabel);
 		strParamsPanel.add(useragent);
 		for (int i = 0; i < (rows * cols) - 4; i++) {
@@ -114,11 +115,10 @@ public class FrameFuzzer extends ModularFrame {
 		attackOptions.add(new JCheckBox("SQL Injection(Errors)"));
 		attackOptions.add(new JCheckBox("XSS(Script Injection)"));
 		attackOptions.add(new JCheckBox("SQL Injection(Blind)"));
-		attackOptions.add(new JCheckBox("CSRF"));
-		JCheckBox php = new JCheckBox("PHP Injection(NOT DONE)");
-		php.setEnabled(false);
+		JCheckBox php = new JCheckBox("PHP Injection(SLOW)");
 		attackOptions.add(php);
-		for (int i = 0; i < 3; i++) {
+		attackOptions.add(new JCheckBox("CSRF"));
+		for (int i = 0; i < 4; i++) {
 			attackOptions.get(i).setSelected(true);
 		}
 	}
