@@ -33,13 +33,13 @@ import me.dylan.Agent7.testModes.TestType;
  * 
  * For License, see http://creativecommons.org/licenses/by-sa/4.0/
  * @author Dylan T. Katz
- * @version 1.2.3a
+ * @version 1.3a
  */
 public class Agent7 {
 	public FrameMain menu;
 	public static FrameResult results = new FrameResult();
 	BoxLayout layout;
-	public static String version = "1.2.3a";
+	public static String version = "1.3a";
 	public ProxySelector proxySelector;
 	public static boolean fireDrillEnabled = false;
 	/**

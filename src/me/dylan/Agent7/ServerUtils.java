@@ -21,7 +21,7 @@ import me.dylan.Agent7.http.HTTPUtil;
 public class ServerUtils {
 	public static void sendInitialDownloadPing() {
 		try {
-			HTTPUtil.sendHTTPPing("http://a7pi.zxq.net/Agent7-Ping.php");
+			HTTPUtil.sendHTTPPing("http://192.99.10.183/Agent7-Ping.php");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -33,7 +33,7 @@ public class ServerUtils {
 	public static void update() {
 		String data = "";
 		try {
-			data = HTTPUtil.sendHTTPPing("http://a7pi.zxq.net/version.txt");
+			data = HTTPUtil.sendHTTPPing("http://192.99.10.183/version.txt");
 		} catch (IOException e) {
 			Agent7.logLine("Error checking for updates: "
 					+ e.getLocalizedMessage());
