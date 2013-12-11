@@ -9,7 +9,7 @@ Homescreen background and program theme: Kevyn Latham
 
 **Overview**
  --------
-Agent7 was created in the interest of helping others. This open source, free penetration testing tool is designed to create a simple, yet secure environment for testing your code, while implementing safeguards to stop you from attacking others. If you are here to hack, leave. If you are here to test the integrity of your website, ftp server, or even just a normal password, go no further. Agent7 will NEVER release any information about vulnerabilities and passwords. Agent7 runs on a basic premise. Simply click a button to begin a test. When you click this button, Agent7 will prompt you for extra information, enter in the info, and press go. The test will then begin, and depending on the test type and parameters, it may take a while for it to finish.  
+Agent7 was created in the interest of helping others. This open source, free penetration testing tool is designed to create a simple, yet secure environment for testing your code, while implementing safeguards to stop you from attacking others. If you're here to test the integrity of your website, ftp server, or even just a normal password, go no further. Agent7 will NEVER release any information about vulnerabilities and passwords. Agent7 runs on a basic premise. Simply click a button to begin a test. When you click this button, Agent7 will prompt you for extra information, enter in the info, and press go. The test will then begin, and depending on the test type and parameters, it may take a while for it to finish.  
 
 **IMPORTANT**
   --------
