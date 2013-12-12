@@ -33,13 +33,13 @@ import me.dylan.Agent7.testModes.TestType;
  * 
  * For License, see http://creativecommons.org/licenses/by-sa/4.0/
  * @author Dylan T. Katz
- * @version 1.3a
+ * @version 1.3.1a
  */
 public class Agent7 {
 	public FrameMain menu;
 	public static FrameResult results = new FrameResult();
 	BoxLayout layout;
-	public static String version = "1.3a";
+	public static String version = "1.3.1a";
 	public ProxySelector proxySelector;
 	public static boolean fireDrillEnabled = false;
 	/**
@@ -100,13 +100,7 @@ public class Agent7 {
 			}
 		}
 		ServerUtils.update();
-		// new FuzzerXSS("http://localhost/FuzzTesting/fuzzyxss.html");
-		// try {
-		// scraper.scrape("Proxies.dat");
 		resLoader.init();
-		// } catch (IOException e) {
-		// e.printStackTrace();
-		// }
 
 		logLine("==========" + "Loaded Agent7 " + version + "==========");
 		logLine(license);
@@ -116,6 +110,8 @@ public class Agent7 {
 			e.printStackTrace();
 		}
 		logLine("==========" + "Awaiting commands." + "==========");
+
+		initActionListeners();
 	}
 
 	public static void main(String[] args) {
@@ -135,8 +131,7 @@ public class Agent7 {
 		menu = new FrameMain();
 		menu.init();
 		bruteforceTest.init();
-		initFTPTestBox();
-		initActionListeners();
+		initDictionaryTestBox();
 		initFuzzTestBox();
 
 	}
@@ -146,7 +141,7 @@ public class Agent7 {
 
 	}
 
-	public void initFTPTestBox() {
+	public void initDictionaryTestBox() {
 		initMenuLocalPass();
 		dictionaryTest = new FrameDictionary("Dictionary Tests");
 		dictionaryTest.init();

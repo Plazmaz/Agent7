@@ -2,13 +2,10 @@ package me.dylan.Agent7.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.swing.CellRendererPane;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,8 +13,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-
 import me.dylan.Agent7.VulnerabilityData;
 
 public class FrameResult extends JFrame {
@@ -50,6 +45,7 @@ public class FrameResult extends JFrame {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.addRow(new Vector<String>(data.getData()));
 		table.setModel(model);
+		table.repaint();
 	}
 
 	public FrameResult() {

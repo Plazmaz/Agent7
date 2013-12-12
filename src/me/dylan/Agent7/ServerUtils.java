@@ -19,6 +19,9 @@ import java.util.jar.JarOutputStream;
 import me.dylan.Agent7.http.HTTPUtil;
 
 public class ServerUtils {
+	/**
+	 * Send a ping to the server, telling it that it has a new download
+	 */
 	public static void sendInitialDownloadPing() {
 		try {
 			HTTPUtil.sendHTTPPing("http://192.99.10.183/Agent7-Ping.php");
@@ -29,7 +32,9 @@ public class ServerUtils {
 				+ " please see our wiki: https://github.com/DynisDev/Agent7/wiki");
 
 	}
-
+	/**
+	 * Update the program if needed
+	 */
 	public static void update() {
 		String data = "";
 		try {
@@ -109,7 +114,13 @@ public class ServerUtils {
 			Agent7.logLine("Failed to update: " + ex.getMessage());
 		}
 	}
-
+	/**
+	 * Save a file from a given URL
+	 * @param Filename
+	 * @param Url
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public static void saveUrl(String filename, String urlString)
 			throws MalformedURLException, IOException {
 		if (!new File(filename).exists()) {
@@ -134,7 +145,9 @@ public class ServerUtils {
 				fout.close();
 		}
 	}
-
+	/**
+	 * Create a file so as not to send initial download ping on every boot.
+	 */
 	public static void createInitFile() {
 		try {
 			File dir = new File(System.getProperty("user.home") + "/Agent7");
@@ -149,13 +162,19 @@ public class ServerUtils {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Find if we're booting for the first time
+	 * @return booted
+	 */
 	public static boolean getFirstTime() {
 		return !new File(
 				(System.getProperty("user.home") + "/Agent7/booted.dat"))
 				.exists();
 	}
-
+	/**
+	 * Get the path to the current jar
+	 * @return path
+	 */
 	public static String getJarPath() {
 		ProtectionDomain pd = Agent7.class.getProtectionDomain();
 		CodeSource cs = pd.getCodeSource();

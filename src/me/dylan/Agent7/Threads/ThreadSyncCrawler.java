@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jsoup.nodes.Document;
 
-import me.dylan.Agent7.dictionary.WebCrawler.CrawlerTendril;
+import me.dylan.Agent7.http.WebCrawler.CrawlerTendril;
 
 
 public class ThreadSyncCrawler {

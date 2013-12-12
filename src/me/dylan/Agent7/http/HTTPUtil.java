@@ -29,7 +29,6 @@ public class HTTPUtil {
 			connection.setRequestProperty("User-agent",
 					FrameFuzzer.useragent.getText());
 		}
-		// Launched Nov 1st, 2013
 		connection.setRequestProperty("Content-Type",
 				"application/x-www-form-urlencoded;charset=" + charset);
 		connection.setRequestMethod("POST");

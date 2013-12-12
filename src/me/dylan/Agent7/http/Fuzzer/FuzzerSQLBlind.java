@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 
-import me.dylan.Agent7.Agent7;
 import me.dylan.Agent7.VulnerabilityData;
 import me.dylan.Agent7.gui.FrameResult;
 import me.dylan.Agent7.http.HTTPUtil;

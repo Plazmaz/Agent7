@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import javax.swing.JCheckBox;
 
 import me.dylan.Agent7.Agent7;
-import me.dylan.Agent7.dictionary.WebCrawler.CrawlerTendril;
 import me.dylan.Agent7.http.Fuzzer.FuzzerCSRF;
 import me.dylan.Agent7.http.Fuzzer.FuzzerPhp;
 import me.dylan.Agent7.http.Fuzzer.FuzzerSQL;
 import me.dylan.Agent7.http.Fuzzer.FuzzerSQLBlind;
 import me.dylan.Agent7.http.Fuzzer.FuzzerXSS;
 import me.dylan.Agent7.http.Fuzzer.IFuzzer;
+import me.dylan.Agent7.http.WebCrawler.CrawlerTendril;
 
 public class FuzzSubmitActionListener implements ActionListener {
 	FrameFuzzer parent;
@@ -28,6 +28,7 @@ public class FuzzSubmitActionListener implements ActionListener {
 			@Override
 			public void run() {
 				ArrayList<IFuzzer> tests = new ArrayList<IFuzzer>();
+				Agent7.results.init(); 
 				for (JCheckBox box : parent.attackOptions) {
 					if (box.isSelected()) {
 						final IFuzzer fuzzer = initializeTestForBox(box,
@@ -39,11 +40,11 @@ public class FuzzSubmitActionListener implements ActionListener {
 						}
 					}
 				}
-				Agent7.results.init();
 				if(tests.size() > 0) {
 					CrawlerTendril tendril = new CrawlerTendril(parent.url.getText(), tests);
 					tendril.runGrowingThread();
 				}
+				
 			}
 		}).start();
 	}

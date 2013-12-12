@@ -24,6 +24,7 @@ public class FrameFuzzer extends ModularFrame {
 	ProperTextField url = new ProperTextField("");
 	ArrayList<JCheckBox> attackOptions = new ArrayList<JCheckBox>();
 	public static ProperTextField useragent = new ProperTextField("");
+	public static JSpinner depth = new JSpinner();
 	JCheckBox crawl = new JCheckBox("Crawl?");
 	ProperButton cookie = new ProperButton("Set a cookie");
 	ProperButton go = new ProperButton("Go!");
@@ -96,6 +97,9 @@ public class FrameFuzzer extends ModularFrame {
 		JPanel controls = new JPanel();
 		controls.setLayout(new FlowLayout());
 		controls.setBackground(Colors.infoBackground1);
+		depth.setBackground(Colors.inputBackground1);
+		depth.setForeground(Colors.inputColor);
+		depth.setValue(1);
 		crawl.setBackground(Colors.inputBackground1);
 		crawl.setForeground(Colors.inputColor);
 		crawl.setEnabled(true);
@@ -104,6 +108,11 @@ public class FrameFuzzer extends ModularFrame {
 //		inf.setBackground(Colors.inputBackground1);
 //		inf.setForeground(Colors.inputColor);
 		controls.add(crawl);
+		JLabel tmp = new JLabel("Crawl depth");
+		tmp.setBackground(Colors.inputBackground1);
+		tmp.setForeground(Colors.inputColor);
+		controls.add(depth);
+		controls.add(tmp);
 //		controls.add(inf);
 //		controls.add(threads);
 		go.addActionListener(new FuzzSubmitActionListener(this));

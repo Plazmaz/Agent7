@@ -39,6 +39,7 @@ public class FrameMain extends JFrame {
 	public ArrayList<String> logQue = new ArrayList<String>();
 	JPanel buttons;
 	protected FrameMain instance;
+	
 	/*
 	 * input elements
 	 */
@@ -48,13 +49,14 @@ public class FrameMain extends JFrame {
 	protected double widthDivisor = 1.5;
 	protected Image img;
 	JLabel background;
+
 	public FrameMain() {
 		super("Agent7 v" + Agent7.version);
 		setResizable(false);
 		try {
 			img = ContentLoader.getImageFromInternalFile("Agent7.png");
-			ImageIcon icon = new ImageIcon(img.getScaledInstance(width-15, height-30,
-					Image.SCALE_SMOOTH));
+			ImageIcon icon = new ImageIcon(img.getScaledInstance(width - 15,
+					height - 30, Image.SCALE_SMOOTH));
 			background = new JLabel(icon);
 			add(background);
 
@@ -106,9 +108,6 @@ public class FrameMain extends JFrame {
 		ftpTestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		buttons.add(ftpTestButton);
 
-		// constraints.insets = new Insets(-70, 0, 0, 0);
-		// constraints.gridx = 0;
-		// constraints.gridy = 2;
 		fuzzTestButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		buttons.add(fuzzTestButton);
 		currentTask.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -119,7 +118,7 @@ public class FrameMain extends JFrame {
 		scroll.setAlignmentX(Component.CENTER_ALIGNMENT);
 		buttons.add(scroll);
 		this.add(buttons, BorderLayout.CENTER);
-		// this.add(scrapeWords, this);
+		
 		this.setVisible(true);
 		beginGUIUpdates();
 	}
@@ -133,7 +132,7 @@ public class FrameMain extends JFrame {
 				while (true) {
 					width = getWidth();
 					height = getHeight();
-					background.setSize(width-15, height-30);
+					background.setSize(width - 15, height - 30);
 					background.repaint();
 					buttons.setLocation(getWidth() / 2
 							- (int) (getWidth() / (widthDivisor * 2)),
@@ -151,7 +150,7 @@ public class FrameMain extends JFrame {
 							output.setText("");
 						}
 						logData.add(info);
-						 System.out.println(info);
+						System.out.println(info);
 						output.setText(output.getText() + info);
 						JScrollBar sbar = scroll.getVerticalScrollBar();
 						if (output.getLineCount() >= 1) {
@@ -197,5 +196,5 @@ public class FrameMain extends JFrame {
 	public static void setTask(String task) {
 		Agent7.instance.menu.currentTask.setText(task);
 	}
-	
+
 }

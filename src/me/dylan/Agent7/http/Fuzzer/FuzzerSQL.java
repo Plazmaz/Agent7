@@ -66,9 +66,10 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 					continue;
 				params.add(inputEl.attr("name"));
 			}
-			executeTestConnection(params);
-
 		}
+		executeTestConnection(params);
+		params.clear();
+
 	}
 
 	@Override
@@ -81,18 +82,14 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 
 	@Override
 	public void executeTestConnection(ArrayList<String> params) {
-		for (String name : params) {
 			for (String payload : payloads) {
 				try {
-					int index = payloads.indexOf(payload);
 					Connection connection = Fuzzer.getConnection(getUrl());
 					sendGetPostPayloads(connection, payload);
-					verifyPayloadExecution(index, name);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-		}
 	}
 
 	public void verifyPayloadExecution(int index, String name)
@@ -115,23 +112,30 @@ public class FuzzerSQL extends Fuzzer implements Injector {
 
 	@Override
 	public void sendGetPostPayloads(Connection connection, String payload) {
+
+		int index = payloads.indexOf(payload);
 		for (String param : params) {
 			if (param.isEmpty())
 				continue;
 			connection.data(param, payload);
-		}
-		try {
-			if (connectionMethod.equalsIgnoreCase("post")) {
-				Connection.Response response = connection.method(Method.POST)
-						.execute();
-				doc = response.parse();
-			} else {
-				Connection.Response response = connection.method(Method.GET)
-						.execute();
-				doc = response.parse();
+			try {
+				if (connectionMethod.equalsIgnoreCase("post")) {
+					Connection.Response response = connection.method(
+							Method.POST).execute();
+					doc = response.parse();
+				} else {
+					Connection.Response response = connection
+							.method(Method.GET).execute();
+					doc = response.parse();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				verifyPayloadExecution(index, param);
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

