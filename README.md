@@ -38,7 +38,7 @@ For more info on how to use Agent7, go to https://github.com/DynisDev/Agent7/wik
    Lower Priority:  
    --------------  
         - Rewrite GUI ☑   
-        - Fix intelligent fuzzer or remove it (preferably the first) ☑   
+        - Fix intelligent fuzzer or remove it (removed) ☑   
         (why do I have all of these done? lol, so much for priority...)
    Aesthetic(I'll implement these last, but they can be added at any time):
    -------------- 
