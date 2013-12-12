@@ -32,13 +32,14 @@ For more info on how to use Agent7, go to https://github.com/DynisDev/Agent7/wik
  ------
    High priority:  
    -------------- 
-        - Rewrite GUI ☑   
         - Re-implement URL discovery mode with php fuzzing and remove unknown  
         blue screen of death bug created when url discovery mode is enabled. ☐   
         - Fix reflected xss detection ☐   
    Lower Priority:  
    --------------  
-        - Fix intelligent fuzzer or remove it (preferably the first) ☐   
+        - Rewrite GUI ☑   
+        - Fix intelligent fuzzer or remove it (preferably the first) ☑   
+        (why do I have all of these done? lol, so much for priority...)
    Aesthetic(I'll implement these last, but they can be added at any time):
    -------------- 
         - Add themes ☐   
