@@ -90,31 +90,41 @@ public class FuzzerXSS extends Fuzzer implements Injector {
 
 	@Override
 	public void executeTestConnection(ArrayList<String> params) {
-		int queriesAttempted = 0;
-		for (String name : params) {
-			for (String payload : payloads) {
-				try {
-					int index = payloads.indexOf(payload);
-					queriesAttempted++;
-					double progress = ((double) (queriesAttempted) / (double) ((payloads
-							.size() * params.size()))) * 100;
-					Agent7.setProgress((int) Math.ceil(progress));
+		for (int i = 0; i < 2; i++) {
+			int queriesAttempted = 0;
+			for (String name : params) {
+				for (String payload : payloads) {
+					try {
+						int index = payloads.indexOf(payload);
+						queriesAttempted++;
+						double progress = ((double) (queriesAttempted) / (double) ((payloads
+								.size() * params.size()))) * 100;
+						Agent7.setProgress((int) Math.ceil(progress));
 
-					payload = payload.replace("#ip", InetAddress.getLocalHost()
-							.getHostAddress());
-					payload = payload.replace("#payload", "vulnerablePage"
-							+ index + "#" + name);
-					Connection connection = Fuzzer.getConnection(getUrl());
-					verifyPayloadExecution(index, name, true);
-					sendGetPostPayloads(connection, payload);
-					verifyPayloadExecution(index, name, false); // not confirmed
-																// functioning.
-				} catch (IOException e) {
-					e.printStackTrace();
+						payload = payload.replace("#ip", InetAddress
+								.getLocalHost().getHostAddress());
+						payload = payload.replace("#payload", "vulnerablePage"
+								+ index + "#" + name);
+						Connection connection = Fuzzer.getConnection(getUrl());
+						sendGetPostPayloads(connection, payload);
+						verifyPayloadExecution(index, name, false); // not
+																	// confirmed
+																	// functioning.
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					
 				}
 			}
+			try {
+				payloads = PayloadUtil.getInjectionPayloads("XSSReflectedTest.txt");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			Agent7.setProgress(0);
 		}
-		Agent7.setProgress(0);
+
 	}
 
 	/**

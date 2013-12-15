@@ -13,13 +13,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+
+import me.dylan.Agent7.Agent7;
 import me.dylan.Agent7.VulnerabilityData;
 
 public class FrameResult extends JFrame {
 	private static final long serialVersionUID = -4313840838204628064L;
 	private static JTable table = new JTable(1, 5) {
 		private static final long serialVersionUID = 8320884203325177588L;
-		
+
 		@Override
 		public Component prepareRenderer(TableCellRenderer renderer, int row,
 				int column) {
@@ -30,7 +32,7 @@ public class FrameResult extends JFrame {
 			}
 			return c;
 		}
-		
+
 		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
@@ -46,6 +48,9 @@ public class FrameResult extends JFrame {
 		model.addRow(new Vector<String>(data.getData()));
 		table.setModel(model);
 		table.repaint();
+		Agent7.logLine("Found vulnerability. Data: page=" + data.getPage()
+				+ " method=" + data.getMethod() + " form_name="+data.getName()+" parameter="
+				+data.getParameter());
 	}
 
 	public FrameResult() {
@@ -64,7 +69,7 @@ public class FrameResult extends JFrame {
 			TableColumn column = new TableColumn();
 			column.setHeaderValue(name);
 			column.setResizable(false);
-			
+
 			column.setWidth((int) (column.getWidth() * 1.5));
 			header.getColumnModel().addColumn(column);
 		}

