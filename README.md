@@ -1,7 +1,7 @@
-Agent7
+Agent7 - Now abandoned :(
 ======
 An open source penetration testing tool
-
+**This project is now abandoned due to several reasons, firstly, there are a lot of better scanners, and I decided that my project was re-inventing the wheel. Secondly, I believe this project has many bugs, and upon looking back on it, it has the potential to damage webpages if not used properly. Anyone may still contribute, but know that I most likely won't be working on this project for a while, most likely indefinately. HOWEVER, you can send me a PM with any questions.**
 Wiki: https://github.com/DynisDev/Agent7/wiki 
 
 Creator: Dylan Katz  
