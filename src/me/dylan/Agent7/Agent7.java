@@ -91,7 +91,7 @@ public class Agent7 {
 		// return;
 		// }
 		logLine("Loading...");
-		if (ServerUtils.getFirstTime()) {
+		/*if (ServerUtils.getFirstTime()) {
 			try {
 				ServerUtils.createInitFile();
 				ServerUtils.sendInitialDownloadPing();
@@ -99,7 +99,7 @@ public class Agent7 {
 
 			}
 		}
-		ServerUtils.update();
+		ServerUtils.update();*/
 		resLoader.init();
 
 		logLine("==========" + "Loaded Agent7 " + version + "==========");
